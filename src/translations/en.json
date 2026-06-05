@@ -1,0 +1,173 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Me",
+    "skills": "Skills",
+    "education": "Education",
+    "certifications": "Certifications",
+    "projects": "Projects",
+    "highlights": "QA Highlights",
+    "contact": "Contact",
+    "download_cv": "Download CV",
+    "cv_es": "CV in Spanish",
+    "cv_en": "CV in English"
+  },
+  "hero": {
+    "greeting": "Hi, I am",
+    "title": "QA Engineer",
+    "subtitle": "QA Engineer specialized in functional testing, automation, APIs, and continuous software quality improvement.",
+    "view_projects": "View Projects",
+    "download_cv": "Download CV",
+    "open_to_work": "Open to Work"
+  },
+  "about": {
+    "title": "About Me",
+    "intro": "Ensuring excellence and robustness in every line of code.",
+    "p1": "Hello, I'm Odabel Santos Álvarez. As a QA Engineer, my primary focus is not just finding bugs, but preventing them and establishing processes that guarantee fast, secure, and high-quality software releases.",
+    "p2": "I specialize in designing and executing testing strategies ranging from thorough manual validations and functional regression tests, to automating critical user workflows (BDD using Selenium + Cucumber) and robust API validation (Postman).",
+    "p3": "My core value lies in bridging technical development and business requirements, ensuring that the final product not only functions technically but also offers a seamless and reliable experience for the end user. I operate under Agile methodologies (Scrum), actively collaborating with developers and product owners.",
+    "approach_title": "My Quality Approach",
+    "approach_1": "Prevention before detection",
+    "approach_2": "Smart and efficient automation",
+    "approach_3": "Continuous cross-functional collaboration"
+  },
+  "skills": {
+    "title": "Technical Skills",
+    "subtitle": "My toolkit for ensuring software quality and optimizing development lifecycles",
+    "categories": {
+      "testing": "Software Testing (QA)",
+      "automation": "Test Automation",
+      "backend": "Backend & API Validation",
+      "qa_management": "Test Management & Tools",
+      "development": "Development & Version Control",
+      "soft_skills": "Soft Skills"
+    }
+  },
+  "education": {
+    "title": "Education & Training",
+    "subtitle": "My learning path and continuous training in the area of quality assurance"
+  },
+  "certifications": {
+    "title": "Certifications",
+    "subtitle": "Official credentials and certifications earned in testing and development",
+    "download": "Download PDF",
+    "selenium_java_cucumber": {
+      "name": "Selenium WebDriver + Java + Cucumber BDD Automation",
+      "date": "Obtained in 2024"
+    },
+    "testing_fundamentals": {
+      "name": "Software Testing Fundamentals (Manual QA & Methodologies)",
+      "date": "Obtained in 2023"
+    },
+    "jira_zephyr": {
+      "name": "Test Management with Jira & Zephyr",
+      "date": "Obtained in 2024"
+    },
+    "postman_api": {
+      "name": "API Testing and Automation with Postman & Newman",
+      "date": "Obtained in 2024"
+    },
+    "html_css": {
+      "name": "Responsive Web Design (HTML5 & CSS3)",
+      "date": "Obtained in 2023"
+    },
+    "capacitate_empleo": {
+      "name": "Software Development & QA — Capacítate para el Empleo",
+      "date": "Obtained in 2023"
+    }
+  },
+  "video": {
+    "title": "Presentation Video",
+    "subtitle": "Get to know me better through this video where I share my experience and approach as a QA Engineer"
+  },
+  "languages": {
+    "title": "Languages",
+    "es": {
+      "name": "Spanish",
+      "level": "Native"
+    },
+    "en": {
+      "name": "English",
+      "level": "B2 - Upper Intermediate"
+    }
+  },
+  "projects": {
+    "title": "Featured Projects",
+    "subtitle": "A selection of my hands-on work, automation frameworks, and testing tools",
+    "filter_all": "All",
+    "filter_manual": "Manual Testing",
+    "filter_automation": "Automation",
+    "filter_api": "API Testing",
+    "filter_personal": "Personal Projects",
+    "role_label": "My Role:",
+    "repo_btn": "View Code",
+    "demo_btn": "Live Demo",
+    "ecommerce_bdd": {
+      "title": "BDD Automation Framework for E-Commerce",
+      "description": "Scaffolded and implemented a robust test automation framework from scratch using BDD (Behavior Driven Development) methodology with Selenium WebDriver, Java, and Cucumber. Automated complex workflows like shopping cart, login, and checkout, generating rich HTML Cucumber Reports.",
+      "role": "QA Automation Engineer & Architect"
+    },
+    "api_postman": {
+      "title": "REST API Validation Suite with Postman",
+      "description": "Created advanced Postman collections for functional validation of 50+ endpoints. Includes automated assertions using JS scripts (JSON Schema validation, status codes, response times, and chained requests). Integrated with Newman for command-line execution.",
+      "role": "QA API Specialist"
+    },
+    "mobile_banking": {
+      "title": "Quality Assurance for Mobile Banking App",
+      "description": "Conducted regression, usability, security, and compatibility testing on emulators and real mobile devices (Android/iOS). Developed and maintained basic mobile test automation scripts using Appium and Java. Documented test suites in Zephyr for Jira.",
+      "role": "QA Manual & Mobile Automation Support"
+    },
+    "saas_testing": {
+      "title": "Comprehensive System Testing for B2B SaaS Platform",
+      "description": "Planned and executed end-to-end (E2E) manual testing, including Smoke, Sanity, and Integration testing. Conducted direct data validation via SQL Server queries. Managed full bug lifecycles in Jira using Xray, actively collaborating in daily Agile sprints.",
+      "role": "Lead Manual QA Tester"
+    },
+    "testdata_generator": {
+      "title": "QA Test Data Generator Tool",
+      "description": "Personal project to streamline testing tasks. Static web application that generates structured test data (valid ID numbers, emails, names, lorem-ipsum paragraphs, and JSON payloads ready for API testing). Persists configuration preferences locally.",
+      "role": "Frontend Developer & Creator"
+    }
+  },
+  "highlights": {
+    "title": "QA Impact & Accomplishments",
+    "subtitle": "Quantitative metrics showcasing my impact on product quality and process efficiency",
+    "tc_designed": "Test Cases Designed",
+    "bugs_reported": "Critical Bugs Identified",
+    "scripts_automated": "Test Scripts Automated",
+    "projects_delivered": "Projects Successfully Delivered",
+    "impact_title": "Real-World Impact",
+    "impact_1_title": "Regression Cycle Time Reduction",
+    "impact_1_desc": "Reduced manual regression test cycles from 3 days to a fully automated Selenium+Java build pipeline running in 40 minutes.",
+    "impact_2_title": "Production Bug Prevention",
+    "impact_2_desc": "Configured automated API tests in CI/CD pipeline, catching 95% of integration issues before staging deployment.",
+    "impact_3_title": "100% Traceability & Testing Docs",
+    "impact_3_desc": "Completely structured test suites in Jira/Xray, obtaining 100% requirement coverage traceability for user stories."
+  },
+  "contact": {
+    "title": "Contact Me",
+    "subtitle": "Have a project in mind or looking to bring a QA specialist onto your team? Send me a message!",
+    "name_label": "Full Name",
+    "email_label": "Email Address",
+    "message_label": "Message",
+    "name_placeholder": "Your name...",
+    "email_placeholder": "your.email@example.com",
+    "message_placeholder": "Write your message here...",
+    "submit_btn": "Send Message",
+    "submit_sending": "Sending...",
+    "submit_success": "Message sent successfully! I'll get back to you soon.",
+    "submit_error": "An error occurred while sending the message. Please try again.",
+    "direct_title": "Direct Contact",
+    "validation": {
+      "name_required": "Name is required",
+      "name_min": "Name must be at least 3 characters long",
+      "email_required": "Email is required",
+      "email_invalid": "Please enter a valid email address",
+      "message_required": "Message is required",
+      "message_min": "Message must be at least 10 characters long"
+    }
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "back_to_top": "Back to Top"
+  }
+}

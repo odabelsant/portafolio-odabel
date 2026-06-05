@@ -1,0 +1,8 @@
+{
+  "metrics": [
+    { "id": "tc_designed", "value": "1,500+" },
+    { "id": "bugs_reported", "value": "450+" },
+    { "id": "scripts_automated", "value": "250+" },
+    { "id": "projects_delivered", "value": "12+" }
+  ]
+}

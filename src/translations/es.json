@@ -1,0 +1,173 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Sobre Mí",
+    "skills": "Habilidades",
+    "education": "Educación",
+    "certifications": "Certificaciones",
+    "projects": "Proyectos",
+    "highlights": "Logros QA",
+    "contact": "Contacto",
+    "download_cv": "Descargar CV",
+    "cv_es": "CV en Español",
+    "cv_en": "CV en Inglés"
+  },
+  "hero": {
+    "greeting": "Hola, soy",
+    "title": "QA Engineer",
+    "subtitle": "QA Engineer especializado en pruebas funcionales, automatización, APIs y mejora continua de calidad de software.",
+    "view_projects": "Ver Proyectos",
+    "download_cv": "Descargar CV",
+    "open_to_work": "Disponible para trabajar"
+  },
+  "about": {
+    "title": "Sobre Mí",
+    "intro": "Asegurando la excelencia y robustez en cada línea de código.",
+    "p1": "Hola, soy Odabel Santos Álvarez. Como QA Engineer, mi enfoque principal no es solo encontrar fallos, sino prevenirlos y construir procesos que aseguren entregas de software rápidas, seguras y de alta calidad.",
+    "p2": "Me especializo en diseñar y ejecutar estrategias de pruebas que abarcan desde validaciones manuales exhaustivas y pruebas funcionales de regresión, hasta la automatización de flujos críticos de usuario (BDD con Selenium + Cucumber) y validación robusta de APIs (Postman).",
+    "p3": "Mi valor principal radica en conectar el desarrollo técnico con las necesidades del negocio, garantizando que el producto final no solo funcione técnicamente, sino que brinde una experiencia fluida y confiable al usuario final. Trabajo bajo metodologías ágiles (Scrum), colaborando activamente con desarrolladores y product owners.",
+    "approach_title": "Mi Enfoque de Calidad",
+    "approach_1": "Prevención antes que detección",
+    "approach_2": "Automatización inteligente y eficiente",
+    "approach_3": "Colaboración interfuncional constante"
+  },
+  "skills": {
+    "title": "Habilidades Técnicas",
+    "subtitle": "Mi caja de herramientas para asegurar la calidad de software y optimizar ciclos de desarrollo",
+    "categories": {
+      "testing": "Pruebas de Software (QA)",
+      "automation": "Automatización de Pruebas",
+      "backend": "Validación de Backend & APIs",
+      "qa_management": "Gestión de Pruebas & Herramientas",
+      "development": "Desarrollo & Herramientas de Control",
+      "soft_skills": "Habilidades Blandas"
+    }
+  },
+  "education": {
+    "title": "Educación & Formación",
+    "subtitle": "Mi trayectoria de aprendizaje y capacitación constante en el área de aseguramiento de calidad"
+  },
+  "certifications": {
+    "title": "Certificaciones",
+    "subtitle": "Credenciales y certificaciones oficiales obtenidas en pruebas y desarrollo",
+    "download": "Descargar PDF",
+    "selenium_java_cucumber": {
+      "name": "Selenium WebDriver + Java + Cucumber BDD Automation",
+      "date": "Obtenido en 2024"
+    },
+    "testing_fundamentals": {
+      "name": "Fundamentos de Pruebas de Software (QA Manual & Metodologías)",
+      "date": "Obtenido en 2023"
+    },
+    "jira_zephyr": {
+      "name": "Gestión de Pruebas con Jira & Zephyr",
+      "date": "Obtenido en 2024"
+    },
+    "postman_api": {
+      "name": "API Testing y Automatización con Postman & Newman",
+      "date": "Obtenido en 2024"
+    },
+    "html_css": {
+      "name": "Diseño Web Responsivo (HTML5 & CSS3)",
+      "date": "Obtenido en 2023"
+    },
+    "capacitate_empleo": {
+      "name": "Desarrollo de Software & QA — Capacítate para el Empleo",
+      "date": "Obtenido en 2023"
+    }
+  },
+  "video": {
+    "title": "Video de Presentación",
+    "subtitle": "Conóceme mejor a través de este video donde comparto mi experiencia y enfoque como QA Engineer"
+  },
+  "languages": {
+    "title": "Idiomas",
+    "es": {
+      "name": "Español",
+      "level": "Nativo"
+    },
+    "en": {
+      "name": "Inglés",
+      "level": "B2 - Intermedio Alto"
+    }
+  },
+  "projects": {
+    "title": "Proyectos Destacados",
+    "subtitle": "Una selección de mis trabajos prácticos, frameworks de automatización y herramientas de prueba",
+    "filter_all": "Todos",
+    "filter_manual": "Pruebas Manuales",
+    "filter_automation": "Automatización",
+    "filter_api": "Pruebas de APIs",
+    "filter_personal": "Proyectos Personales",
+    "role_label": "Mi Rol:",
+    "repo_btn": "Ver Código",
+    "demo_btn": "Ver Demo",
+    "ecommerce_bdd": {
+      "title": "Framework de Automatización BDD para E-commerce",
+      "description": "Desarrollo desde cero de un framework robusto de automatización de pruebas bajo el enfoque BDD (Behavior Driven Development) utilizando Selenium WebDriver, Java y Cucumber. Automatización de flujos complejos de carrito, login, checkout y generación de reportes interactivos HTML con Cucumber Reports.",
+      "role": "QA Automation Engineer & Architect"
+    },
+    "api_postman": {
+      "title": "Suite de Validación de APIs REST con Postman",
+      "description": "Creación de colecciones avanzadas en Postman para validación funcional de más de 50 endpoints. Incluye aserciones automáticas mediante scripts JS (validación de esquemas JSON, códigos de estado, tiempos de respuesta y flujos de datos correlacionados). Integración con Newman para ejecución en línea de comandos.",
+      "role": "QA API Specialist"
+    },
+    "mobile_banking": {
+      "title": "Aseguramiento de Calidad de App de Banca Móvil",
+      "description": "Pruebas de regresión, usabilidad, seguridad y compatibilidad en emuladores y dispositivos móviles reales (Android/iOS). Creación y mantenimiento de scripts de automatización básicos con Appium y Java. Documentación exhaustiva en Zephyr para Jira.",
+      "role": "QA Manual & Mobile Automation Support"
+    },
+    "saas_testing": {
+      "title": "Pruebas de Sistema Integrales para Plataforma SaaS B2B",
+      "description": "Planificación y ejecución de pruebas manuales extremo a extremo (E2E), incluyendo Smoke, Sanity e Integración. Validación directa de datos en base de datos mediante consultas SQL Server. Gestión de ciclo de vida de bugs en Jira con Xray, colaborando diariamente en sprints ágiles.",
+      "role": "Lead Manual QA Tester"
+    },
+    "testdata_generator": {
+      "title": "Herramienta de Generación de Datos de Prueba",
+      "description": "Proyecto personal para agilizar la labor de testers. Aplicación web estática que genera datos ficticios estructurados (cédulas válidas, correos, nombres, textos lorem-ipsum y payloads JSON listos para pruebas de APIs). Almacenamiento local de preferencias.",
+      "role": "Desarrollador Frontend & Creador"
+    }
+  },
+  "highlights": {
+    "title": "Logros e Impacto QA",
+    "subtitle": "Métricas cuantitativas que reflejan mi impacto en la calidad del producto y eficiencia de procesos",
+    "tc_designed": "Casos de Prueba Diseñados",
+    "bugs_reported": "Errores Críticos Identificados",
+    "scripts_automated": "Scripts de Prueba Automatizados",
+    "projects_delivered": "Proyectos Entregados con Éxito",
+    "impact_title": "Impacto en Proyectos Reales",
+    "impact_1_title": "Reducción de Tiempo de Regresión",
+    "impact_1_desc": "Pasamos de 3 días de pruebas de regresión manuales a un pipeline automatizado de 40 minutos en Selenium+Java.",
+    "impact_2_title": "Prevención de Bugs en Producción",
+    "impact_2_desc": "Implementación de pruebas automáticas de API en CI/CD que filtran el 95% de fallos de integración antes del despliegue.",
+    "impact_3_title": "Documentación y Trazabilidad al 100%",
+    "impact_3_desc": "Estructuración completa de suites de prueba en Jira/Xray, logrando una trazabilidad del 100% de historias de usuario."
+  },
+  "contact": {
+    "title": "Contacto",
+    "subtitle": "¿Tienes un proyecto en mente o buscas incorporar un QA especializado en tu equipo? ¡Escríbeme!",
+    "name_label": "Nombre Completo",
+    "email_label": "Correo Electrónico",
+    "message_label": "Mensaje",
+    "name_placeholder": "Tu nombre...",
+    "email_placeholder": "tu.correo@ejemplo.com",
+    "message_placeholder": "Escribe tu mensaje aquí...",
+    "submit_btn": "Enviar Mensaje",
+    "submit_sending": "Enviando...",
+    "submit_success": "¡Mensaje enviado con éxito! Me pondré en contacto contigo pronto.",
+    "submit_error": "Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo.",
+    "direct_title": "Contacto Directo",
+    "validation": {
+      "name_required": "El nombre es obligatorio",
+      "name_min": "El nombre debe tener al menos 3 caracteres",
+      "email_required": "El correo es obligatorio",
+      "email_invalid": "Por favor ingresa un correo electrónico válido",
+      "message_required": "El mensaje es obligatorio",
+      "message_min": "El mensaje debe tener al menos 10 caracteres"
+    }
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "back_to_top": "Subir"
+  }
+}
