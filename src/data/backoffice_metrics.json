@@ -1,8 +1,25 @@
 {
   "metrics": [
-    { "id": "tc_designed", "value": "1,500+" },
-    { "id": "bugs_reported", "value": "450+" },
-    { "id": "scripts_automated", "value": "250+" },
-    { "id": "projects_delivered", "value": "12+" }
-  ]
+    {
+      "id": "tc_designed",
+      "value": "1,500+ testing",
+      "icon": "FileText"
+    },
+    {
+      "id": "bugs_reported",
+      "value": "450+",
+      "icon": "Bug"
+    },
+    {
+      "id": "scripts_automated",
+      "value": "250+",
+      "icon": "Code2"
+    },
+    {
+      "id": "projects_delivered",
+      "value": "12+",
+      "icon": "CheckSquare"
+    }
+  ],
+  "_updated": "2026-06-06T21:33:35.425Z"
 }
