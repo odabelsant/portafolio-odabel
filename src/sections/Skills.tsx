@@ -95,7 +95,7 @@ export const Skills: React.FC = () => {
               {/* Category Header */}
               <div className="mb-6 text-left">
                 <h3 className="text-lg font-bold text-white dark:text-white light:text-slate-900 font-display tracking-wide border-b border-white/5 dark:border-white/5 light:border-slate-200 pb-3">
-                  {t(category.titleKey)}
+                  {category.titleKey ? t(category.titleKey) : category.title}
                 </h3>
               </div>
 

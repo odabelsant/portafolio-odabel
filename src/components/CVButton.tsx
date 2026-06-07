@@ -36,10 +36,12 @@ export const CVButton: React.FC<CVButtonProps> = ({ variant = "primary", showTex
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Style matched to ThemeToggle/LanguageToggle: p-2.5 rounded-xl border border-white/10
+  // Style matched to ThemeToggle/LanguageToggle: px-3 py-2 rounded-xl border border-white/10
   const buttonClasses =
     variant === "primary"
       ? "flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-medium rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 focus:outline-none"
-      : "flex items-center gap-2 px-4 py-2 border border-primary/30 dark:border-primary/30 light:border-slate-300 hover:border-primary/70 text-primary hover:text-secondary font-medium rounded-xl transition-all duration-300 bg-transparent focus:outline-none";
+      : "flex items-center gap-1.5 px-3 py-2 border border-white/10 dark:border-white/10 light:border-slate-200 bg-slate-900/50 dark:bg-slate-900/50 light:bg-white text-slate-300 dark:text-slate-300 light:text-slate-700 hover:text-primary hover:border-primary/50 transition-all duration-300 rounded-xl focus:outline-none font-medium text-sm";
 
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
@@ -51,9 +53,9 @@ export const CVButton: React.FC<CVButtonProps> = ({ variant = "primary", showTex
         className={buttonClasses}
         aria-label={t("nav.download_cv")}
       >
-        <Download className="w-4.5 h-4.5" />
-        {showText && <span>{t("nav.download_cv")}</span>}
-        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+        <Download className="w-4 h-4 text-primary" />
+        {showText && <span className="text-sm font-semibold">CV</span>}
+        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
       </button>
 
       <AnimatePresence>

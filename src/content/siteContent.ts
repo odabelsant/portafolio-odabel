@@ -6,6 +6,8 @@
 
 import backofficeYoutube from "../data/backoffice_youtube.json";
 import backofficeMetrics from "../data/backoffice_metrics.json";
+import backofficeSkills from "../data/backoffice_skills.json";
+import backofficeEducation from "../data/backoffice_education.json";
 
 export interface SocialLinks {
   linkedin: string;
@@ -30,8 +32,19 @@ export interface Skill {
 
 export interface SkillCategory {
   id: string;
-  titleKey: string; // Translation key
+  titleKey?: string; // Translation key
+  title?: string;     // Direct title string fallback
   skills: Skill[];
+}
+
+export interface EducationItem {
+  id: string;
+  title: string;
+  titleKey?: string;
+  institution: string;
+  date: string;
+  dateKey?: string;
+  description: string;
 }
 
 export const siteConfig = {
@@ -76,65 +89,23 @@ export const siteConfig = {
     labelKey: m.labelKey || "",
     icon: m.icon || "CheckSquare"
   })) as MetricHighlight[],
-  skillsCategories: [
-    {
-      id: "testing",
-      titleKey: "skills.categories.testing",
-      skills: [
-        { name: "Manual Testing",      level: 95, icon: "ClipboardCheck" },
-        { name: "Regression Testing",  level: 95, icon: "RefreshCw"      },
-        { name: "Smoke Testing",       level: 95, icon: "Flame"          },
-        { name: "Functional Testing",  level: 90, icon: "Settings"       },
-      ],
-    },
-    {
-      id: "automation",
-      titleKey: "skills.categories.automation",
-      skills: [
-        { name: "Selenium",        level: 85, icon: "Cpu"       },
-        { name: "Cucumber",        level: 85, icon: "FileCode2" },
-        { name: "Katalon Studio",  level: 80, icon: "Layers"    },
-        { name: "Appium (Básico)", level: 60, icon: "Smartphone"},
-      ],
-    },
-    {
-      id: "backend",
-      titleKey: "skills.categories.backend",
-      skills: [
-        { name: "Postman",      level: 90, icon: "Send"   },
-        { name: "API Testing",  level: 85, icon: "Globe"  },
-        { name: "SQL",          level: 80, icon: "Database"},
-      ],
-    },
-    {
-      id: "qa_management",
-      titleKey: "skills.categories.qa_management",
-      skills: [
-        { name: "Jira",         level: 90, icon: "Kanban"     },
-        { name: "Zephyr",       level: 85, icon: "ShieldCheck" },
-        { name: "Xray",         level: 85, icon: "Kanban"     },
-        { name: "Azure DevOps", level: 80, icon: "Cloud"      },
-      ],
-    },
-    {
-      id: "development",
-      titleKey: "skills.categories.development",
-      skills: [
-        { name: "Java",                  level: 75, icon: "Coffee"   },
-        { name: "HTML & CSS",            level: 85, icon: "Code"     },
-        { name: "JavaScript (Básico)",   level: 70, icon: "Terminal" },
-        { name: "Git & Gitflow",         level: 85, icon: "GitBranch"},
-      ],
-    },
-    {
-      id: "soft_skills",
-      titleKey: "skills.categories.soft_skills",
-      skills: [
-        { name: "Scrum & Agile",            level: 90, icon: "Users"        },
-        { name: "Atención al detalle",      level: 95, icon: "Search"       },
-        { name: "Comunicación Asertiva",    level: 90, icon: "MessageSquare"},
-        { name: "Resolución de Problemas",  level: 90, icon: "Lightbulb"   },
-      ],
-    },
-  ] as SkillCategory[],
+  skillsCategories: (backofficeSkills.categories || []).map((cat: any) => ({
+    id: cat.id,
+    titleKey: cat.titleKey || "",
+    title: cat.title || "",
+    skills: (cat.skills || []).map((s: any) => ({
+      name: s.name,
+      level: s.level,
+      icon: s.icon
+    }))
+  })) as SkillCategory[],
+  education: (backofficeEducation.education || []).map((edu: any) => ({
+    id: edu.id,
+    title: edu.title || "",
+    titleKey: edu.titleKey || "",
+    institution: edu.institution || "",
+    date: edu.date || "",
+    dateKey: edu.dateKey || "",
+    description: edu.description || ""
+  })) as EducationItem[],
 };
