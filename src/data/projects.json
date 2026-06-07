@@ -1,8 +1,9 @@
 [
   {
     "id": "ecommerce-bdd",
-    "titleKey": "projects.ecommerce_bdd.title",
-    "descriptionKey": "projects.ecommerce_bdd.description",
+    "title": "ecommerce-Odabel",
+    "description": "pruebas en selenium ",
+    "role": "QA Engineer",
     "tech": [
       "Selenium",
       "Java",
@@ -11,9 +12,11 @@
       "Git",
       "JUnit"
     ],
-    "roleKey": "projects.ecommerce_bdd.role",
     "category": "automation",
-    "repoUrl": "https://github.com/odabelrunner/ecommerce-bdd-framework"
+    "repoUrl": "https://github.com/odabelrunner/ecommerce-bdd-framework",
+    "titleKey": "projects.ecommerce_bdd.title",
+    "descriptionKey": "projects.ecommerce_bdd.description",
+    "roleKey": "projects.ecommerce_bdd.role"
   },
   {
     "id": "api-postman-suite",
