@@ -131,19 +131,19 @@ export const Projects: React.FC = () => {
                   {/* Project Details */}
                   <div className="p-6 text-left">
                     <h3 className="text-lg font-bold text-white dark:text-white light:text-slate-900 mb-2 font-display group-hover:text-primary transition-colors">
-                      {t(project.titleKey)}
+                      {project.title || (project.titleKey ? t(project.titleKey) : "")}
                     </h3>
 
                     {/* Role Tag */}
                     <div className="flex items-center gap-1.5 mb-4 text-xs font-semibold text-primary">
                       <span>{t("projects.role_label")}</span>
                       <span className="px-2 py-0.5 rounded bg-primary/10 border border-primary/20">
-                        {t(project.roleKey)}
+                        {project.role || (project.roleKey ? t(project.roleKey) : "")}
                       </span>
                     </div>
 
                     <p className="text-sm text-slate-400 dark:text-slate-400 light:text-slate-600 leading-relaxed mb-6 line-clamp-4">
-                      {t(project.descriptionKey)}
+                      {project.description || (project.descriptionKey ? t(project.descriptionKey) : "")}
                     </p>
                   </div>
                 </div>

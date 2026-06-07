@@ -77,7 +77,7 @@ export const QAHighlights: React.FC = () => {
               </p>
               {/* Metric Title */}
               <p className="text-xs sm:text-sm font-semibold text-slate-400 dark:text-slate-400 light:text-slate-600 uppercase tracking-wider">
-                {t(metric.labelKey)}
+                {metric.label || (metric.labelKey ? t(metric.labelKey) : "")}
               </p>
             </motion.div>
           ))}

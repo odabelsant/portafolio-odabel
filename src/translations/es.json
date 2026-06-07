@@ -126,6 +126,11 @@
       "title": "Herramienta de Generación de Datos de Prueba",
       "description": "Proyecto personal para agilizar la labor de testers. Aplicación web estática que genera datos ficticios estructurados (cédulas válidas, correos, nombres, textos lorem-ipsum y payloads JSON listos para pruebas de APIs). Almacenamiento local de preferencias.",
       "role": "Desarrollador Frontend & Creador"
+    },
+    "playwright_suite": {
+      "title": "Suite de Pruebas E2E y Regresión Visual",
+      "description": "Diseño e implementación de una arquitectura de pruebas robusta usando Playwright y TypeScript bajo el patrón Page Object Model (POM). Incluye pruebas funcionales E2E con intercepción de peticiones de red (mocking a Formspree) y pruebas de regresión visual (VRT) adaptativas en múltiples resoluciones (desktop y mobile).",
+      "role": "QA Automation Architect"
     }
   },
   "highlights": {

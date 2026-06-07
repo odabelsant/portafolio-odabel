@@ -126,6 +126,11 @@
       "title": "QA Test Data Generator Tool",
       "description": "Personal project to streamline testing tasks. Static web application that generates structured test data (valid ID numbers, emails, names, lorem-ipsum paragraphs, and JSON payloads ready for API testing). Persists configuration preferences locally.",
       "role": "Frontend Developer & Creator"
+    },
+    "playwright_suite": {
+      "title": "E2E & Visual Regression Testing Suite",
+      "description": "Designed and implemented a testing architecture using Playwright and TypeScript with the Page Object Model (POM) pattern. Features E2E functional verification with network mocking (Formspree API bypass) and Visual Regression Testing (VRT) across desktop and mobile viewports.",
+      "role": "QA Automation Architect"
     }
   },
   "highlights": {

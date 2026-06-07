@@ -19,6 +19,7 @@ export interface MetricHighlight {
   value: string;
   labelKey: string; // Translation key
   icon: string;     // Lucide icon name
+  label?: string;   // Direct fallback label
 }
 
 export interface Skill {
@@ -63,12 +64,18 @@ export const siteConfig = {
     { id: "highlights",     labelKey: "nav.highlights" },
     { id: "contact",        labelKey: "nav.contact" },
   ],
-  metrics: [
-    { id: "tc_designed",        value: backofficeMetrics.metrics?.find((m) => m.id === "tc_designed")?.value || "1,500+", labelKey: "highlights.tc_designed",        icon: "FileText"    },
-    { id: "bugs_reported",      value: backofficeMetrics.metrics?.find((m) => m.id === "bugs_reported")?.value || "450+",   labelKey: "highlights.bugs_reported",      icon: "Bug"         },
-    { id: "scripts_automated",  value: backofficeMetrics.metrics?.find((m) => m.id === "scripts_automated")?.value || "250+",   labelKey: "highlights.scripts_automated",  icon: "Code2"       },
-    { id: "projects_delivered", value: backofficeMetrics.metrics?.find((m) => m.id === "projects_delivered")?.value || "12+",    labelKey: "highlights.projects_delivered", icon: "CheckSquare" },
-  ] as MetricHighlight[],
+  metrics: (backofficeMetrics.metrics || [
+    { id: "tc_designed",        value: "1,500+", labelKey: "highlights.tc_designed",        icon: "FileText"    },
+    { id: "bugs_reported",      value: "450+",   labelKey: "highlights.bugs_reported",      icon: "Bug"         },
+    { id: "scripts_automated",  value: "250+",   labelKey: "highlights.scripts_automated",  icon: "Code2"       },
+    { id: "projects_delivered", value: "12+",    labelKey: "highlights.projects_delivered", icon: "CheckSquare" },
+  ]).map((m: any) => ({
+    id: m.id,
+    value: m.value,
+    label: m.label || "",
+    labelKey: m.labelKey || "",
+    icon: m.icon || "CheckSquare"
+  })) as MetricHighlight[],
   skillsCategories: [
     {
       id: "testing",

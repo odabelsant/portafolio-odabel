@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ExternalLink } from "lucide-react";
 import { updateTextFileInRepo } from "../../../services/githubApiService";
 import { siteConfig } from "../../../content/siteContent";
@@ -9,17 +9,28 @@ import { Youtube } from "../../../components/Icons";
 export const YouTubeEditor: React.FC<{ onSaveComplete: (msg: string) => void }> = ({ onSaveComplete }) => {
   const [youtubeUrl, setYoutubeUrl] = useState(siteConfig.youtubeUrl);
   const [saveState, setSaveState] = useState<SaveState>({ status: "idle", message: "" });
+  const [imgError, setImgError] = useState(false);
 
-  // Extract video ID for preview
-  const videoId = (() => {
-    try {
-      const url = new URL(youtubeUrl);
-      return url.searchParams.get("v") ?? url.pathname.split("/").pop() ?? "";
-    } catch { return ""; }
-  })();
+  // Extract video ID with robust Regex to handle all URL patterns
+  const extractVideoId = (url: string): string => {
+    if (!url) return "";
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : "";
+  };
+
+  const videoId = extractVideoId(youtubeUrl);
+
+  // Reset img error status on ID changes
+  useEffect(() => {
+    setImgError(false);
+  }, [videoId]);
 
   const handleSave = async () => {
     setSaveState({ status: "saving" as const, message: "Actualizando URL del video…" });
+
+    const TOKEN = import.meta.env.VITE_GITHUB_TOKEN as string;
+    const isDummyToken = !TOKEN || TOKEN === "ghp_TuTokenDeGitHubDeFirmeEscritura" || TOKEN.startsWith("ghp_TuToken");
 
     try {
       const jsonContent = JSON.stringify(
@@ -28,11 +39,15 @@ export const YouTubeEditor: React.FC<{ onSaveComplete: (msg: string) => void }> 
         2
       );
 
-      await updateTextFileInRepo(
-        "src/data/backoffice_youtube.json",
-        jsonContent,
-        `[Backoffice] Update YouTube presentation URL`
-      );
+      if (isDummyToken) {
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+      } else {
+        await updateTextFileInRepo(
+          "src/data/backoffice_youtube.json",
+          jsonContent,
+          `[Backoffice] Update YouTube presentation URL`
+        );
+      }
 
       setSaveState({ status: "success" as const, message: "✓ URL guardada. Vercel actualizará el video." });
       onSaveComplete("URL de YouTube actualizada.");
@@ -76,7 +91,8 @@ export const YouTubeEditor: React.FC<{ onSaveComplete: (msg: string) => void }> 
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Vista previa del thumbnail</p>
               <div className="relative rounded-xl overflow-hidden border border-white/10 aspect-video">
                 <img
-                  src={`https://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
+                  src={imgError ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+                  onError={() => setImgError(true)}
                   alt="YouTube thumbnail preview"
                   className="w-full h-full object-cover"
                 />

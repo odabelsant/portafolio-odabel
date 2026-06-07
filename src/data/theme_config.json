@@ -1,0 +1,14 @@
+{
+  "dark": {
+    "bgPrimary": "#050816",
+    "bgSurface": "#0b1129",
+    "textPrimary": "#ffffff",
+    "accentColor": "#3b82f6"
+  },
+  "light": {
+    "bgPrimary": "#ffffff",
+    "bgSurface": "#f3f4f6",
+    "textPrimary": "#111827",
+    "accentColor": "#2563eb"
+  }
+}

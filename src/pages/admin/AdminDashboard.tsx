@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Shield, LogOut, Type, BarChart3, FolderOpen,
-  CheckCircle2, ChevronRight,
+  CheckCircle2, ChevronRight, Menu, X, Palette, Briefcase
 } from "lucide-react";
 import { Github, Youtube } from "../../components/Icons";
 import { TextsEditor } from "./sections/TextsEditor";
 import { YouTubeEditor } from "./sections/YouTubeEditor";
 import { MetricsEditor } from "./sections/MetricsEditor";
 import { FilesEditor } from "./sections/FilesEditor";
+import { ThemingConfigurator } from "./sections/ThemingConfigurator";
+import { ProjectsManager } from "./sections/ProjectsManager";
 
 // ─── Sidebar Tab Config ───────────────────────────────────────────────────────
 
@@ -24,6 +26,8 @@ const TABS: Tab[] = [
   { id: "youtube", label: "Video de Presentación", icon: <Youtube className="w-4.5 h-4.5" /> },
   { id: "metrics", label: "Logros QA",              icon: <BarChart3 className="w-4.5 h-4.5" /> },
   { id: "files",   label: "Archivos Multimedia",    icon: <FolderOpen className="w-4.5 h-4.5" /> },
+  { id: "theming", label: "Configuración de Tema",  icon: <Palette className="w-4.5 h-4.5" /> },
+  { id: "projects",label: "Gestor de Proyectos",    icon: <Briefcase className="w-4.5 h-4.5" /> },
 ];
 
 // ─── Props ────────────────────────────────────────────────────────────────────
@@ -37,6 +41,7 @@ interface AdminDashboardProps {
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState<string>("texts");
   const [notifications, setNotifications] = useState<string[]>([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const addNotification = (message: string) => {
     const id = `${Date.now()}`;
@@ -55,6 +60,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       <header className="glass-nav sticky top-0 z-30 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto flex items-center justify-between h-16">
           <div className="flex items-center gap-3">
+            {/* Hamburger Button for Mobile */}
+            <button
+              type="button"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="md:hidden p-2 rounded-xl border border-white/10 text-slate-400 hover:text-white hover:bg-white/5 transition-colors focus:outline-none"
+              aria-label="Menu principal"
+            >
+              {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-md shadow-primary/25">
               <Shield className="w-4.5 h-4.5 text-white" />
             </div>
@@ -90,59 +105,65 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       </header>
 
       {/* ── Main Layout ── */}
-      <div className="flex flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 gap-6 lg:gap-8">
+      <div className="flex flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 gap-6 lg:gap-8 relative">
+        {/* Mobile Sidebar Backdrop */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-[#050816]/80 backdrop-blur-sm z-40 md:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
 
-        {/* ── Sidebar ── */}
-        <aside className="hidden md:flex flex-col w-64 flex-shrink-0">
-          <nav className="glass-panel rounded-2xl border border-white/5 p-2 space-y-1 sticky top-24">
-            {TABS.map((tab) => (
+        {/* ── Sidebar (Desktop fixed left, Mobile Overlay Drawer) ── */}
+        <aside
+          className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#090d23] border-r border-white/10 p-5 flex flex-col justify-between transition-transform duration-300 md:relative md:translate-x-0 md:bg-transparent md:border-r-0 md:p-0 md:z-auto ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div className="space-y-6">
+            <div className="flex items-center justify-between md:hidden pb-4 border-b border-white/5">
+              <span className="text-sm font-extrabold text-white">Navegación</span>
               <button
-                key={tab.id}
                 type="button"
-                onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-left transition-all duration-200 focus:outline-none group ${
-                  activeTab === tab.id
-                    ? "bg-primary/10 text-primary border border-primary/15"
-                    : "text-slate-400 hover:text-white hover:bg-white/5"
-                }`}
+                onClick={() => setIsSidebarOpen(false)}
+                className="p-1 rounded-lg hover:bg-white/5 text-slate-400"
               >
-                <span className={activeTab === tab.id ? "text-primary" : "text-slate-500 group-hover:text-slate-300"}>
-                  {tab.icon}
-                </span>
-                <span className="flex-1">{tab.label}</span>
-                {activeTab === tab.id && <ChevronRight className="w-4 h-4 text-primary" />}
+                <X className="w-5 h-5" />
               </button>
-            ))}
-
-            {/* Info block */}
-            <div className="mt-4 pt-4 border-t border-white/5 px-2">
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Los cambios se guardan directamente en el repositorio de GitHub y Vercel ejecuta el CI/CD automáticamente.
-              </p>
             </div>
-          </nav>
-        </aside>
 
-        {/* ── Mobile Tab Selector ── */}
-        <div className="md:hidden w-full mb-4">
-          <div className="glass-panel rounded-2xl border border-white/5 p-1.5 flex gap-1 overflow-x-auto">
-            {TABS.map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
-                  activeTab === tab.id
-                    ? "bg-primary/10 text-primary"
-                    : "text-slate-400 hover:text-white"
-                }`}
-              >
-                {tab.icon}
-                <span>{tab.label}</span>
-              </button>
-            ))}
+            <nav className="glass-panel rounded-2xl border border-white/5 p-2 space-y-1">
+              {TABS.map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                    setIsSidebarOpen(false);
+                  }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-left transition-all duration-200 focus:outline-none group ${
+                    activeTab === tab.id
+                      ? "bg-primary/10 text-primary border border-primary/15"
+                      : "text-slate-400 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  <span className={activeTab === tab.id ? "text-primary" : "text-slate-500 group-hover:text-slate-300"}>
+                    {tab.icon}
+                  </span>
+                  <span className="flex-1">{tab.label}</span>
+                  {activeTab === tab.id && <ChevronRight className="w-4 h-4 text-primary" />}
+                </button>
+              ))}
+
+              {/* Info block */}
+              <div className="mt-4 pt-4 border-t border-white/5 px-2">
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Los cambios se guardan directamente en el repositorio de GitHub y Vercel ejecuta el CI/CD automáticamente.
+                </p>
+              </div>
+            </nav>
           </div>
-        </div>
+        </aside>
 
         {/* ── Content Area ── */}
         <main className="flex-1 min-w-0">
@@ -159,6 +180,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
               {activeTab === "youtube" && <YouTubeEditor onSaveComplete={addNotification} />}
               {activeTab === "metrics" && <MetricsEditor onSaveComplete={addNotification} />}
               {activeTab === "files"   && <FilesEditor   onSaveComplete={addNotification} />}
+              {activeTab === "theming" && <ThemingConfigurator onSaveComplete={addNotification} />}
+              {activeTab === "projects" && <ProjectsManager onSaveComplete={addNotification} />}
             </motion.div>
           </AnimatePresence>
         </main>

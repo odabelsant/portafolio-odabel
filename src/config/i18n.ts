@@ -9,6 +9,10 @@ import backofficeTexts from "../data/backoffice_texts.json";
 // Merge backofficeTexts into translationES dynamically
 const mergedES = {
   ...translationES,
+  nav: {
+    ...translationES.nav,
+    ...(backofficeTexts.nav || {}),
+  },
   hero: {
     ...translationES.hero,
     ...(backofficeTexts.hero || {}),
@@ -20,6 +24,20 @@ const mergedES = {
   contact: {
     ...translationES.contact,
     ...(backofficeTexts.contact || {}),
+  },
+  certifications: {
+    ...translationES.certifications,
+    ...Object.fromEntries(
+      Object.entries(translationES.certifications || {}).map(([key, value]) => [
+        key,
+        typeof value === "object" && value !== null
+          ? {
+              ...value,
+              ...(backofficeTexts.certifications?.[key] || {}),
+            }
+          : value,
+      ])
+    ),
   },
 };
 
