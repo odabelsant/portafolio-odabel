@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Play, Maximize2 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -28,16 +28,29 @@ function getYouTubeVideoId(url: string): string | null {
 }
 
 export const VideoPresentation: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const videoId = getYouTubeVideoId(siteConfig.youtubeUrl);
+  const currentLang = i18n.language ? i18n.language.split("-")[0] : "es";
+
+  // Dynamic URL selection with Spanish fallback (TAREA 2)
+  let selectedUrl = currentLang === "en" ? siteConfig.youtubeEN : siteConfig.youtubeES;
+  if (!selectedUrl || selectedUrl.trim() === "") {
+    selectedUrl = siteConfig.youtubeES;
+  }
+
+  const videoId = getYouTubeVideoId(selectedUrl);
   const embedUrl = videoId
     ? `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&color=white`
     : null;
   const thumbnailUrl = videoId
     ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
     : null;
+
+  // Reset loading state when the active videoId changes
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [videoId]);
 
   return (
     <section
@@ -123,7 +136,7 @@ export const VideoPresentation: React.FC = () => {
                     <div className="absolute inset-0 flex items-center justify-center bg-slate-950 text-slate-500">
                       <div className="text-center space-y-3">
                         <Play className="w-12 h-12 mx-auto opacity-30" />
-                        <p className="text-sm">Video no disponible. Configura <code className="text-primary">youtubeUrl</code> en siteContent.</p>
+                        <p className="text-sm">Video no disponible. Configura los videos en el CMS.</p>
                       </div>
                     </div>
                   )}
@@ -145,7 +158,7 @@ export const VideoPresentation: React.FC = () => {
                   <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">YouTube</span>
                 </div>
                 <a
-                  href={siteConfig.youtubeUrl}
+                  href={selectedUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-primary transition-colors duration-200"

@@ -65,8 +65,9 @@ export const siteConfig = {
     es: "/recursos/CV_ES.pdf",
     en: "/recursos/CV_EN.pdf",
   },
-  // HU-02: YouTube presentation video URL (editable from Backoffice)
-  youtubeUrl: backofficeYoutube.youtubeUrl || "https://www.youtube.com/watch?v=JjDL7Turyp8",
+  // YouTube presentation video URLs (editable from Backoffice)
+  youtubeES: (backofficeYoutube as any).urlES || "https://www.youtube.com/watch?v=FO1rII573ho",
+  youtubeEN: (backofficeYoutube as any).urlEN || "",
   navigation: [
     { id: "home",           labelKey: "nav.home" },
     { id: "about",          labelKey: "nav.about" },

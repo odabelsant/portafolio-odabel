@@ -21,6 +21,11 @@ export interface EducationItem {
   description: string;
 }
 
+export interface VideoConfig {
+  urlES: string;
+  urlEN: string;
+}
+
 // Strictly type the i18n translation namespaces
 export interface TranslationSchema {
   nav: {
