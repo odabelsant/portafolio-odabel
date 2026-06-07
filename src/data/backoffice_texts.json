@@ -2,15 +2,19 @@
   "hero": {
     "greeting": "Hola, soy",
     "title": "QA Engineer",
-    "subtitle": "QA Engineer especializado en pruebas funcionales, automatización, APIs y mejora continua de calidad de software."
+    "subtitle": "QA Engineer/ Automation especializado en pruebas funcionales, automatización, APIs y mejora continua de calidad de software.",
+    "view_projects": "Ver Proyectos",
+    "download_cv": "Descargar CV",
+    "open_to_work": "Disponible para trabajar"
   },
   "about": {
     "intro": "Asegurando la excelencia y robustez en cada línea de código.",
     "p1": "Hola, soy Odabel Santos Álvarez. Como QA Engineer, mi enfoque principal no es solo encontrar fallos, sino prevenirlos y construir procesos que aseguren entregas de software rápidas, seguras y de alta calidad.",
     "p2": "Me especializo en diseñar y ejecutar estrategias de pruebas que abarcan desde validaciones manuales exhaustivas y pruebas funcionales de regresión, hasta la automatización de flujos críticos de usuario (BDD con Selenium + Cucumber) y validación robusta de APIs (Postman).",
-    "p3": "Mi valor principal radica en conectar el desarrollo técnico con las necesidades del negocio, garantizando que el producto final no solo funcione técnicamente, sino que brinde una experiencia fluida y confiable al usuario final."
+    "p3": "Mi valor principal radica en conectar el desarrollo técnico con las necesidades del negocio, garantizando que el producto final no solo funcione técnicamente, sino que brinde una experiencia fluida y confiable al usuario final. "
   },
   "contact": {
     "subtitle": "¿Tienes un proyecto en mente o buscas incorporar un QA especializado en tu equipo? ¡Escríbeme!"
-  }
+  },
+  "_backoffice_updated": "2026-06-06T21:26:24.971Z"
 }
