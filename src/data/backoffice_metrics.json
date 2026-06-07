@@ -2,9 +2,9 @@
   "metrics": [
     {
       "id": "tc_designed",
-      "label": "Casos de Prueba Diseñados",
+      "label": "Pelea con Rubén diaria",
       "value": "1,500+ ",
-      "icon": "FileText",
+      "icon": "Bug",
       "labelKey": "highlights.tc_designed"
     },
     {
@@ -29,5 +29,5 @@
       "labelKey": "highlights.projects_delivered"
     }
   ],
-  "_updated": "2026-06-07T02:56:41.333Z"
+  "_updated": "2026-06-07T03:11:18.375Z"
 }
