@@ -3,7 +3,14 @@
     "id": "ecommerce-bdd",
     "titleKey": "projects.ecommerce_bdd.title",
     "descriptionKey": "projects.ecommerce_bdd.description",
-    "tech": ["Selenium", "Java", "Cucumber", "Maven", "Git", "JUnit"],
+    "tech": [
+      "Selenium",
+      "Java",
+      "Cucumber",
+      "Maven",
+      "Git",
+      "JUnit"
+    ],
     "roleKey": "projects.ecommerce_bdd.role",
     "category": "automation",
     "repoUrl": "https://github.com/odabelrunner/ecommerce-bdd-framework"
@@ -12,24 +19,29 @@
     "id": "api-postman-suite",
     "titleKey": "projects.api_postman.title",
     "descriptionKey": "projects.api_postman.description",
-    "tech": ["Postman", "Newman", "SQL", "Gitflow", "Jira", "JSON Schema"],
+    "tech": [
+      "Postman",
+      "Newman",
+      "SQL",
+      "Gitflow",
+      "Jira",
+      "JSON Schema"
+    ],
     "roleKey": "projects.api_postman.role",
     "category": "api",
     "repoUrl": "https://github.com/odabelrunner/api-testing-postman"
   },
   {
-    "id": "mobile-banking-app",
-    "titleKey": "projects.mobile_banking.title",
-    "descriptionKey": "projects.mobile_banking.description",
-    "tech": ["Appium", "Java", "Android SDK", "Git", "Zephyr"],
-    "roleKey": "projects.mobile_banking.role",
-    "category": "automation"
-  },
-  {
     "id": "saas-system-testing",
     "titleKey": "projects.saas_testing.title",
     "descriptionKey": "projects.saas_testing.description",
-    "tech": ["Jira", "Xray", "Excel", "SQL Server", "Agile/Scrum"],
+    "tech": [
+      "Jira",
+      "Xray",
+      "Excel",
+      "SQL Server",
+      "Agile/Scrum"
+    ],
     "roleKey": "projects.saas_testing.role",
     "category": "manual"
   },
@@ -37,7 +49,13 @@
     "id": "qa-testdata-generator",
     "titleKey": "projects.testdata_generator.title",
     "descriptionKey": "projects.testdata_generator.description",
-    "tech": ["HTML", "CSS", "JavaScript", "LocalStorage", "JSON"],
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "LocalStorage",
+      "JSON"
+    ],
     "roleKey": "projects.testdata_generator.role",
     "category": "personal",
     "repoUrl": "https://github.com/odabelrunner/qa-test-data-helper",
@@ -47,7 +65,13 @@
     "id": "playwright-e2e-suite",
     "titleKey": "projects.playwright_suite.title",
     "descriptionKey": "projects.playwright_suite.description",
-    "tech": ["Playwright", "TypeScript", "VRT (Visual Regression)", "POM (Page Objects)", "GitHub Actions"],
+    "tech": [
+      "Playwright",
+      "TypeScript",
+      "VRT (Visual Regression)",
+      "POM (Page Objects)",
+      "GitHub Actions"
+    ],
     "roleKey": "projects.playwright_suite.role",
     "category": "automation",
     "repoUrl": "https://github.com/odabelsant/playwright-e2e-suite"
