@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { Github, Youtube } from "../../components/Icons";
 import { TextsEditor } from "./sections/TextsEditor";
-import { YouTubeEditor } from "./sections/YouTubeEditor";
+import { VideoPresentationManager } from "./sections/VideoPresentation";
 import { MetricsEditor } from "./sections/MetricsEditor";
 import { FilesEditor } from "./sections/FilesEditor";
 import { ThemingConfigurator } from "./sections/ThemingConfigurator";
@@ -199,7 +199,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
               className="glass-panel rounded-2xl border border-white/5 p-6 sm:p-8"
             >
               {activeTab === "texts"   && <TextsEditor  onSaveComplete={addNotification} />}
-              {activeTab === "youtube" && <YouTubeEditor onSaveComplete={addNotification} />}
+              {activeTab === "youtube" && <VideoPresentationManager onSaveComplete={addNotification} />}
               {activeTab === "metrics" && <MetricsEditor onSaveComplete={addNotification} />}
               {activeTab === "skills"  && <SkillsManager onSaveComplete={addNotification} />}
               {activeTab === "education" && <EducationManager onSaveComplete={addNotification} />}
