@@ -1,9 +1,9 @@
 {
   "dark": {
-    "bgPrimary": "#8c1cab",
-    "bgSurface": "#b51bc0",
+    "bgPrimary": "#0000ff",
+    "bgSurface": "#0000ff",
     "textPrimary": "#ffffff",
-    "accentColor": "#000000"
+    "accentColor": "#00ffff"
   },
   "light": {
     "bgPrimary": "#ffffff",
