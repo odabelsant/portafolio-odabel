@@ -18,11 +18,7 @@
   },
   "_backoffice_updated": "2026-06-06T21:26:24.971Z",
   "nav": {
-    "cv_es": "Curriculum Vitae (Español)"
-  },
-  "certifications": {
-    "selenium_java_cucumber": {
-      "name": "Certificado — Selenium + Cucumber"
-    }
+    "cv_es": "Curriculum Vitae (Español)",
+    "cv_en": "Curriculum Vitae (Inglés)"
   }
 }
