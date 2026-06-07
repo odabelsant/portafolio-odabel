@@ -14,6 +14,7 @@
     ],
     "category": "automation",
     "repoUrl": "https://github.com/odabelrunner/ecommerce-bdd-framework",
+    "image": "blob:https://portafolio-odabel.vercel.app/f9b0025f-3ad7-4d98-b35f-f51d82231604",
     "titleKey": "projects.ecommerce_bdd.title",
     "descriptionKey": "projects.ecommerce_bdd.description",
     "roleKey": "projects.ecommerce_bdd.role"
