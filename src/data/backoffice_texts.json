@@ -21,8 +21,8 @@
     "cv_es": "Curriculum Vitae (Español)"
   },
   "certifications": {
-    "postman_api": {
-      "name": "Certificado — Postman & API Testing"
+    "selenium_java_cucumber": {
+      "name": "Certificado — Selenium + Cucumber"
     }
   }
 }
