@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Search, Plus, Edit2, Trash2, Image, X,
-  Upload, CheckCircle2, AlertCircle, Link,
-  Check, Info
+  Upload, CheckCircle2, AlertCircle,
+  Check
 } from "lucide-react";
 import { updateTextFileInRepo } from "../../../services/githubApiService";
 import { Github } from "../../../components/Icons";
@@ -40,7 +40,7 @@ export const ProjectsManager: React.FC<{ onSaveComplete: (msg: string) => void }
   
   // Drag & Drop State
   const [dragActive, setDragActive] = useState(false);
-  const [uploadedImageFile, setUploadedImageFile] = useState<File | null>(null);
+  const [, setUploadedImageFile] = useState<File | null>(null);
   const [uploadedImagePreview, setUploadedImagePreview] = useState<string | null>(null);
 
   // Save state for operations

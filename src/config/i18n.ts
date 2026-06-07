@@ -7,23 +7,25 @@ import translationEN from "../translations/en.json";
 import backofficeTexts from "../data/backoffice_texts.json";
 
 // Merge backofficeTexts into translationES dynamically
+const texts = backofficeTexts as any;
+
 const mergedES = {
   ...translationES,
   nav: {
     ...translationES.nav,
-    ...(backofficeTexts.nav || {}),
+    ...(texts.nav || {}),
   },
   hero: {
     ...translationES.hero,
-    ...(backofficeTexts.hero || {}),
+    ...(texts.hero || {}),
   },
   about: {
     ...translationES.about,
-    ...(backofficeTexts.about || {}),
+    ...(texts.about || {}),
   },
   contact: {
     ...translationES.contact,
-    ...(backofficeTexts.contact || {}),
+    ...(texts.contact || {}),
   },
   certifications: {
     ...translationES.certifications,
@@ -33,7 +35,7 @@ const mergedES = {
         typeof value === "object" && value !== null
           ? {
               ...value,
-              ...(backofficeTexts.certifications?.[key] || {}),
+              ...(texts.certifications?.[key] || {}),
             }
           : value,
       ])

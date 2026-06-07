@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Palette, CheckCircle2, AlertCircle } from "lucide-react";
+import { Palette, AlertCircle } from "lucide-react";
 import { updateTextFileInRepo } from "../../../services/githubApiService";
 import { SaveButton } from "./TextsEditor";
 import type { SaveState } from "./TextsEditor";
