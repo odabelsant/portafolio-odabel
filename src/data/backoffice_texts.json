@@ -21,8 +21,8 @@
     "cv_es": "Curriculum Vitae (Español)"
   },
   "certifications": {
-    "testing_fundamentals": {
-      "name": "Certificado — Testing Fundamentals"
+    "postman_api": {
+      "name": "Certificado — Postman & API Testing"
     }
   }
 }
