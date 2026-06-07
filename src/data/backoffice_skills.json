@@ -4,59 +4,148 @@
       "id": "testing",
       "title": "Pruebas de Software (QA)",
       "skills": [
-        { "name": "Manual Testing", "level": 95, "icon": "ClipboardCheck" },
-        { "name": "Regression Testing", "level": 95, "icon": "RefreshCw" },
-        { "name": "Smoke Testing", "level": 95, "icon": "Flame" },
-        { "name": "Functional Testing", "level": 90, "icon": "Settings" }
+        {
+          "name": "Manual Testing",
+          "level": 98,
+          "icon": "ClipboardCheck"
+        },
+        {
+          "name": "Regression Testing",
+          "level": 95,
+          "icon": "RefreshCw"
+        },
+        {
+          "name": "Smoke Testing",
+          "level": 95,
+          "icon": "Flame"
+        },
+        {
+          "name": "Functional Testing",
+          "level": 90,
+          "icon": "Settings"
+        }
       ]
     },
     {
       "id": "automation",
       "title": "Automatización de Pruebas",
       "skills": [
-        { "name": "Selenium", "level": 85, "icon": "Cpu" },
-        { "name": "Cucumber", "level": 85, "icon": "FileCode2" },
-        { "name": "Katalon Studio", "level": 80, "icon": "Layers" }
+        {
+          "name": "Selenium",
+          "level": 85,
+          "icon": "Cpu"
+        },
+        {
+          "name": "Cucumber",
+          "level": 85,
+          "icon": "FileCode2"
+        },
+        {
+          "name": "Katalon Studio",
+          "level": 80,
+          "icon": "Layers"
+        }
       ]
     },
     {
       "id": "backend",
       "title": "Validación de Backend & APIs",
       "skills": [
-        { "name": "Postman", "level": 90, "icon": "Send" },
-        { "name": "API Testing", "level": 85, "icon": "Globe" },
-        { "name": "SQL", "level": 80, "icon": "Database" }
+        {
+          "name": "Postman",
+          "level": 90,
+          "icon": "Send"
+        },
+        {
+          "name": "API Testing",
+          "level": 85,
+          "icon": "Globe"
+        },
+        {
+          "name": "SQL",
+          "level": 80,
+          "icon": "Database"
+        }
       ]
     },
     {
       "id": "qa_management",
       "title": "Gestión de Pruebas & Herramientas",
       "skills": [
-        { "name": "Jira", "level": 90, "icon": "Kanban" },
-        { "name": "Zephyr", "level": 85, "icon": "ShieldCheck" },
-        { "name": "Xray", "level": 85, "icon": "Kanban" },
-        { "name": "Azure DevOps", "level": 80, "icon": "Cloud" }
+        {
+          "name": "Jira",
+          "level": 90,
+          "icon": "Kanban"
+        },
+        {
+          "name": "Zephyr",
+          "level": 85,
+          "icon": "ShieldCheck"
+        },
+        {
+          "name": "Xray",
+          "level": 85,
+          "icon": "Kanban"
+        },
+        {
+          "name": "Azure DevOps",
+          "level": 80,
+          "icon": "Cloud"
+        }
       ]
     },
     {
       "id": "development",
       "title": "Desarrollo & Herramientas de Control",
       "skills": [
-        { "name": "Java", "level": 75, "icon": "Coffee" },
-        { "name": "HTML & CSS", "level": 85, "icon": "Code" },
-        { "name": "JavaScript (Básico)", "level": 70, "icon": "Terminal" },
-        { "name": "Git & Gitflow", "level": 85, "icon": "GitBranch" }
+        {
+          "name": "Java",
+          "level": 75,
+          "icon": "Coffee"
+        },
+        {
+          "name": "HTML & CSS",
+          "level": 85,
+          "icon": "Code"
+        },
+        {
+          "name": "JavaScript (Básico)",
+          "level": 70,
+          "icon": "Terminal"
+        },
+        {
+          "name": "Git & Gitflow",
+          "level": 85,
+          "icon": "GitBranch"
+        }
       ]
     },
     {
       "id": "soft_skills",
       "title": "Habilidades Blandas",
       "skills": [
-        { "name": "Scrum & Agile", "level": 90, "icon": "Users" },
-        { "name": "Atención al detalle", "level": 95, "icon": "Search" },
-        { "name": "Comunicación Asertiva", "level": 90, "icon": "MessageSquare" },
-        { "name": "Resolución de Problemas", "level": 90, "icon": "Lightbulb" }
+        {
+          "name": "Scrum & Agile",
+          "level": 90,
+          "icon": "Users"
+        },
+        {
+          "name": "Atención al detalle",
+          "level": 95,
+          "icon": "Search"
+        },
+        {
+          "name": "Comunicación Asertiva",
+          "level": 90,
+          "icon": "MessageSquare"
+        },
+        {
+          "name": "Resolución de Problemas",
+          "level": 90,
+          "icon": "Lightbulb"
+        }
       ]
     }
-  ]
+  ],
+  "_updated": "2026-06-07T12:44:17.001Z"
 }
