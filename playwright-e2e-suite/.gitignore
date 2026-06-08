@@ -1,0 +1,18 @@
+# Dependency directories
+node_modules/
+
+# Playwright reports and test outputs
+test-results/
+playwright-report/
+blob-report/
+playwright/.local-browsers/
+
+# Environment variables and local configs
+.env
+.env.*
+!.env.example
+*.local
+
+# System files
+.DS_Store
+Thumbs.db

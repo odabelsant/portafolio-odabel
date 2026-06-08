@@ -1,0 +1,28 @@
+{
+  "name": "qa-playwright-e2e-framework",
+  "version": "1.0.0",
+  "description": "Standalone E2E and Visual Regression Testing framework built with Playwright and TypeScript using the Page Object Model (POM) pattern.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:ui": "npx playwright test --ui",
+    "test:debug": "npx playwright test --debug",
+    "test:report": "npx playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "e2e",
+    "testing",
+    "automation",
+    "typescript",
+    "pom",
+    "vrt"
+  ],
+  "author": "Odabel Santos",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}
