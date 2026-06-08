@@ -149,3 +149,19 @@ export interface TranslationSchema {
     back_to_top: string;
   };
 }
+
+export interface BackofficeCertificationText {
+  name?: string;
+  date?: string;
+  institution?: string;
+}
+
+export interface BackofficeTexts {
+  nav?: Record<string, string>;
+  hero?: Record<string, string>;
+  about?: Record<string, string>;
+  contact?: Record<string, string>;
+  certifications?: Record<string, BackofficeCertificationText>;
+  uploadedFiles?: Record<string, string>;
+  _backoffice_updated?: string;
+}

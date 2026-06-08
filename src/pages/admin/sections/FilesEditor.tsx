@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { Upload, User, FileText, Award, CheckCircle2, AlertCircle } from "lucide-react";
 import { uploadBinaryFileToRepo, updateTextFileInRepo } from "../../../services/githubApiService";
 import backofficeTexts from "../../../data/backoffice_texts.json";
+import type { BackofficeTexts } from "../../../data/types";
 
 interface UploadItem {
   id: string;
@@ -84,6 +85,7 @@ interface UploadStatus {
 }
 
 export const FilesEditor: React.FC<{ onSaveComplete: (msg: string) => void }> = ({ onSaveComplete }) => {
+  const typedBackofficeTexts = backofficeTexts as BackofficeTexts;
   const [uploadStatuses, setUploadStatuses] = useState<Record<string, UploadStatus>>(
     Object.fromEntries(UPLOAD_TARGETS.map((t) => [t.id, { status: "idle", message: "" }]))
   );
@@ -100,12 +102,21 @@ export const FilesEditor: React.FC<{ onSaveComplete: (msg: string) => void }> = 
     UPLOAD_TARGETS.forEach((t) => {
       if (t.i18nKey) {
         if (t.id.startsWith("cert-")) {
-          initial[t.id] = (backofficeTexts as any).certifications?.[t.i18nKey]?.name || t.label;
+          initial[t.id] = typedBackofficeTexts.certifications?.[t.i18nKey]?.name || t.label;
         } else if (t.id.startsWith("cv-")) {
-          initial[t.id] = (backofficeTexts as any).nav?.[t.i18nKey] || t.label;
+          initial[t.id] = typedBackofficeTexts.nav?.[t.i18nKey] || t.label;
         }
       } else {
         initial[t.id] = t.label;
+      }
+    });
+    return initial;
+  });
+  const [editedInstitutions, setEditedInstitutions] = useState<Record<string, string>>(() => {
+    const initial: Record<string, string> = {};
+    UPLOAD_TARGETS.forEach((t) => {
+      if (t.i18nKey && t.id.startsWith("cert-")) {
+        initial[t.id] = typedBackofficeTexts.certifications?.[t.i18nKey]?.institution || "";
       }
     });
     return initial;
@@ -120,6 +131,10 @@ export const FilesEditor: React.FC<{ onSaveComplete: (msg: string) => void }> = 
 
   const handleTitleChange = (id: string, val: string) => {
     setEditedTitles((prev) => ({ ...prev, [id]: val }));
+  };
+
+  const handleInstitutionChange = (id: string, val: string) => {
+    setEditedInstitutions((prev) => ({ ...prev, [id]: val }));
   };
 
   // Drag and drop handler events
@@ -177,7 +192,7 @@ export const FilesEditor: React.FC<{ onSaveComplete: (msg: string) => void }> = 
       }
 
       // 2. Persist dynamic titles and files in backoffice_texts.json
-      const updatedTexts = JSON.parse(JSON.stringify(backofficeTexts));
+      const updatedTexts: BackofficeTexts = JSON.parse(JSON.stringify(typedBackofficeTexts)) as BackofficeTexts;
       
       if (file) {
         if (!updatedTexts.uploadedFiles) {
@@ -193,6 +208,7 @@ export const FilesEditor: React.FC<{ onSaveComplete: (msg: string) => void }> = 
             updatedTexts.certifications[target.i18nKey] = {};
           }
           updatedTexts.certifications[target.i18nKey].name = editedTitles[target.id];
+          updatedTexts.certifications[target.i18nKey].institution = editedInstitutions[target.id] || "";
         } else if (isCv) {
           if (!updatedTexts.nav) updatedTexts.nav = {};
           updatedTexts.nav[target.i18nKey] = editedTitles[target.id];
@@ -262,6 +278,15 @@ export const FilesEditor: React.FC<{ onSaveComplete: (msg: string) => void }> = 
                         className="w-full px-2 py-1 rounded bg-slate-950/40 text-white font-bold text-sm border border-transparent hover:border-white/10 focus:border-primary focus:bg-slate-950/70 focus:outline-none transition-all"
                         placeholder="Editar título..."
                       />
+                      {target.id.startsWith("cert-") && (
+                        <input
+                          type="text"
+                          value={editedInstitutions[target.id] ?? ""}
+                          onChange={(e) => handleInstitutionChange(target.id, e.target.value)}
+                          className="w-full px-2 py-1 rounded bg-slate-950/40 text-slate-200 text-sm border border-transparent hover:border-white/10 focus:border-primary focus:bg-slate-950/70 focus:outline-none transition-all"
+                          placeholder="Institución / Academia"
+                        />
+                      )}
                       <p className="text-xs text-slate-500">{target.description}</p>
                       <code className="text-[10px] text-slate-600 font-mono block">{target.repoPath}</code>
                     </div>
