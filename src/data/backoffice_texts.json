@@ -23,7 +23,7 @@
   "uploadedFiles": {
     "cert-jira": "/certificates/jira_zephyr.png",
     "cert-postman": "/certificates/postman_api.png",
-    "cert-selenium": "/certificates/selenium_java_cucumber.png"
+    "cert-testing": "/certificates/testing_fundamentals.png"
   },
   "certifications": {
     "jira_zephyr": {
@@ -33,8 +33,8 @@
       "name": "Certificado — Postman & API Testing",
       "institution": "TesteandoYa"
     },
-    "selenium_java_cucumber": {
-      "name": "Certificado — Selenium + Cucumber",
+    "testing_fundamentals": {
+      "name": "Certificado — Testing Fundamentals",
       "institution": "TesteandoYa"
     }
   }
