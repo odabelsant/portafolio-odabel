@@ -20,20 +20,6 @@
     "roleKey": "projects.ecommerce_bdd.role"
   },
   {
-    "id": "saas-system-testing",
-    "titleKey": "projects.saas_testing.title",
-    "descriptionKey": "projects.saas_testing.description",
-    "tech": [
-      "Jira",
-      "Xray",
-      "Excel",
-      "SQL Server",
-      "Agile/Scrum"
-    ],
-    "roleKey": "projects.saas_testing.role",
-    "category": "manual"
-  },
-  {
     "id": "playwright-e2e-suite",
     "titleKey": "projects.playwright_suite.title",
     "descriptionKey": "projects.playwright_suite.description",
