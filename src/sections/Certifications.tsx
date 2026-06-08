@@ -4,12 +4,14 @@ import { Download, Award, Calendar, FileCheck, Eye } from "lucide-react";
 import { motion } from "framer-motion";
 import { certificatesData } from "../data/certificates";
 import backofficeTexts from "../data/backoffice_texts.json";
+import type { BackofficeTexts } from "../data/types";
 
 export const Certifications: React.FC = () => {
   const { t } = useTranslation();
+  const typedBackofficeTexts = backofficeTexts as BackofficeTexts;
 
   const getCertificatePath = (certId: string, defaultPath: string) => {
-    const uploadedFiles = (backofficeTexts as any).uploadedFiles || {};
+    const uploadedFiles = typedBackofficeTexts.uploadedFiles || {};
     let targetId = "";
     if (certId === "selenium-java-cucumber") targetId = "cert-selenium";
     else if (certId === "testing-fundamentals") targetId = "cert-testing";
@@ -21,6 +23,9 @@ export const Certifications: React.FC = () => {
     }
     return defaultPath;
   };
+
+  const getBackofficeCertKey = (nameKey: string) =>
+    nameKey.replace(/^certifications\./, "").replace(/\.name$/, "");
 
   return (
     <section
@@ -43,6 +48,8 @@ export const Certifications: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {certificatesData.map((cert, index) => {
             const filePath = getCertificatePath(cert.id, cert.pdfPath);
+            const certBackofficeKey = getBackofficeCertKey(cert.nameKey);
+            const dynamicInstitution = typedBackofficeTexts.certifications?.[certBackofficeKey]?.institution?.trim();
 
             return (
               <motion.div
@@ -71,10 +78,12 @@ export const Certifications: React.FC = () => {
                     {/* BUG-01 FIX: nameKey now correctly maps to certifications.* namespace */}
                     {t(cert.nameKey)}
                   </h3>
-                  <p className="text-sm font-medium text-slate-400 text-left mb-6 flex items-center gap-1">
-                    <FileCheck className="w-4 h-4 text-slate-500 flex-shrink-0" />
-                    <span>{cert.institution}</span>
-                  </p>
+                  {dynamicInstitution ? (
+                    <p className="text-sm font-medium text-slate-400 text-left mb-6 flex items-center gap-1">
+                      <FileCheck className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                      <span>{dynamicInstitution}</span>
+                    </p>
+                  ) : null}
                 </div>
 
                 {/* Actions: Download & View */}
