@@ -1,20 +1,20 @@
 [
   {
     "id": "ecommerce-bdd",
-    "title": "ecommerce-Odabel",
-    "description": "pruebas en selenium ",
-    "role": "QA Engineer",
+    "title": "Pets Automation Selenium + Java",
+    "description": " PetsPruebaAutomatizacion Automatización de pruebas funcionales para la tienda de mascotas en línea JPetStore, desarrollada con Java, Selenium WebDriver, Cucumber y Gherkin en IntelliJ IDEA.",
+    "role": "QA Automation",
     "tech": [
       "Selenium",
       "Java",
       "Cucumber",
+      "BDD",
+      "Gherkin",
       "Maven",
-      "Git",
-      "JUnit"
+      "Git"
     ],
     "category": "automation",
-    "repoUrl": "https://github.com/odabelrunner/ecommerce-bdd-framework",
-    "image": "blob:https://portafolio-odabel.vercel.app/f9b0025f-3ad7-4d98-b35f-f51d82231604",
+    "repoUrl": "https://github.com/odabelsant/PetsPruebaAutomatizacion",
     "titleKey": "projects.ecommerce_bdd.title",
     "descriptionKey": "projects.ecommerce_bdd.description",
     "roleKey": "projects.ecommerce_bdd.role"
