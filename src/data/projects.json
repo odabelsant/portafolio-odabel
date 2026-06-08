@@ -18,20 +18,5 @@
     "titleKey": "projects.ecommerce_bdd.title",
     "descriptionKey": "projects.ecommerce_bdd.description",
     "roleKey": "projects.ecommerce_bdd.role"
-  },
-  {
-    "id": "playwright-e2e-suite",
-    "titleKey": "projects.playwright_suite.title",
-    "descriptionKey": "projects.playwright_suite.description",
-    "tech": [
-      "Playwright",
-      "TypeScript",
-      "VRT (Visual Regression)",
-      "POM (Page Objects)",
-      "GitHub Actions"
-    ],
-    "roleKey": "projects.playwright_suite.role",
-    "category": "automation",
-    "repoUrl": "https://github.com/odabelsant/playwright-e2e-suite"
   }
 ]
