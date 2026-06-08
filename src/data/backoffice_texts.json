@@ -22,19 +22,15 @@
   },
   "uploadedFiles": {
     "cert-jira": "/certificates/jira_zephyr.png",
-    "cert-postman": "/certificates/postman_api.png",
-    "cert-testing": "/certificates/testing_fundamentals.png"
+    "cert-postman": "/certificates/postman_api.png"
   },
   "certifications": {
     "jira_zephyr": {
-      "name": "Certificado — Jira & Zephyr"
+      "name": "Certificado — Jira & Zephyr",
+      "institution": "TesteandoYa"
     },
     "postman_api": {
       "name": "Certificado — Postman & API Testing",
-      "institution": "TesteandoYa"
-    },
-    "testing_fundamentals": {
-      "name": "Certificado — Testing Fundamentals",
       "institution": "TesteandoYa"
     }
   }
