@@ -22,14 +22,14 @@
   },
   "uploadedFiles": {
     "cert-jira": "Jira.png",
-    "cert-selenium": "/certificates/selenium_java_cucumber.png"
+    "cert-testing": "/certificates/testing_fundamentals.png"
   },
   "certifications": {
     "jira_zephyr": {
       "name": "Certificado — Jira & Zephyr"
     },
-    "selenium_java_cucumber": {
-      "name": "Certificado — Selenium + Cucumber"
+    "testing_fundamentals": {
+      "name": "Certificado — Testing Fundamentals"
     }
   }
 }
