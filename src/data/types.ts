@@ -156,12 +156,26 @@ export interface BackofficeCertificationText {
   institution?: string;
 }
 
+export interface Certificate {
+  id: string;
+  title: string;
+  institution: string;
+  year: string;
+  fileUrl: string;
+}
+
+export interface BackofficeCertificates {
+  certificates: Certificate[];
+  _updated?: string;
+}
+
 export interface BackofficeTexts {
   nav?: Record<string, string>;
   hero?: Record<string, string>;
   about?: Record<string, string>;
   contact?: Record<string, string>;
   certifications?: Record<string, BackofficeCertificationText>;
+  certificates?: Certificate[];
   uploadedFiles?: Record<string, string>;
   _backoffice_updated?: string;
 }
