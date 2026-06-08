@@ -18,5 +18,17 @@
     "titleKey": "projects.ecommerce_bdd.title",
     "descriptionKey": "projects.ecommerce_bdd.description",
     "roleKey": "projects.ecommerce_bdd.role"
+  },
+  {
+    "id": "project-1780879336218",
+    "title": "Portafolio-Online-playwright-e2e-framework",
+    "description": "Framework Enterprise de pruebas E2E y Regresión Visual (VRT) construido con Playwright y TypeScript. Implementa el patrón Page Object Model (POM) y pipelines de CI/CD mediante GitHub Actions.",
+    "role": "QA Automation",
+    "tech": [
+      "Playwright & TypeScript",
+      "CI/CD."
+    ],
+    "category": "automation",
+    "repoUrl": "https://github.com/odabelsant/qa-playwright-e2e-framework"
   }
 ]
