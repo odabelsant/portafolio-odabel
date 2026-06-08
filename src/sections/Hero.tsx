@@ -204,10 +204,10 @@ export const Hero: React.FC = () => {
                 className="absolute -left-6 top-8 glass-panel border border-white/10 shadow-xl rounded-2xl px-4 py-3 text-center"
               >
                 <p className="text-2xl font-extrabold font-display bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  3+
+                  {t("hero.experience_years", "2+")}
                 </p>
-                <p className="text-xs text-slate-400 font-semibold uppercase tracking-wide leading-tight mt-0.5">
-                  Years<br />QA Exp.
+                <p className="text-xs text-slate-400 font-semibold uppercase tracking-wide leading-tight mt-0.5 whitespace-pre-line">
+                  {t("hero.experience_label", "Years\nQA Exp.")}
                 </p>
               </motion.div>
             </div>
