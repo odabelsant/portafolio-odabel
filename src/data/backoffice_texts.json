@@ -21,11 +21,15 @@
     "cv_es": "Curriculum Vitae (Español)"
   },
   "uploadedFiles": {
-    "cert-jira": "Jira.png"
+    "cert-jira": "Jira.png",
+    "cert-selenium": "/certificates/selenium_java_cucumber.png"
   },
   "certifications": {
     "jira_zephyr": {
       "name": "Certificado — Jira & Zephyr"
+    },
+    "selenium_java_cucumber": {
+      "name": "Certificado — Selenium + Cucumber"
     }
   }
 }
