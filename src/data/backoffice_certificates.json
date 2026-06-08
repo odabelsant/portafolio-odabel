@@ -1,0 +1,47 @@
+{
+  "certificates": [
+    {
+      "id": "selenium-java-cucumber",
+      "title": "Selenium WebDriver + Java + Cucumber BDD Automation",
+      "institution": "Udemy / Global QA Certification",
+      "year": "2024",
+      "fileUrl": "/certificates/selenium_java_cucumber.pdf"
+    },
+    {
+      "id": "testing-fundamentals",
+      "title": "Fundamentos de Testing de Software",
+      "institution": "International Software Testing Institute",
+      "year": "2024",
+      "fileUrl": "/certificates/testing_fundamentals.pdf"
+    },
+    {
+      "id": "jira-zephyr",
+      "title": "Gestión de Pruebas con Jira & Zephyr",
+      "institution": "Atlassian / SmartBear Academy",
+      "year": "2024",
+      "fileUrl": "/certificates/jira_zephyr.pdf"
+    },
+    {
+      "id": "postman-api",
+      "title": "API Testing y Automatización con Postman & Newman",
+      "institution": "Postman Student / Academy",
+      "year": "2024",
+      "fileUrl": "/certificates/postman_api.pdf"
+    },
+    {
+      "id": "html-css",
+      "title": "HTML & CSS",
+      "institution": "FreeCodeCamp / Tech Academy",
+      "year": "2024",
+      "fileUrl": "/recursos/certificado_odabel.pdf"
+    },
+    {
+      "id": "capacitate-empleo",
+      "title": "Capacítate para el Empleo",
+      "institution": "Fundación Carlos Slim",
+      "year": "2024",
+      "fileUrl": "/recursos/certificado_capacitate_empleo.pdf"
+    }
+  ],
+  "_updated": "2026-06-08T15:00:53.000Z"
+}
