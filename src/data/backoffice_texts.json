@@ -22,14 +22,14 @@
   },
   "uploadedFiles": {
     "cert-jira": "Jira.png",
-    "cert-testing": "/certificates/testing_fundamentals.png"
+    "cert-postman": "/certificates/postman_api.png"
   },
   "certifications": {
     "jira_zephyr": {
       "name": "Certificado — Jira & Zephyr"
     },
-    "testing_fundamentals": {
-      "name": "Certificado — Testing Fundamentals"
+    "postman_api": {
+      "name": "Certificado — Postman & API Testing"
     }
   }
 }
