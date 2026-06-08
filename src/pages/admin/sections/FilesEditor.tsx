@@ -155,13 +155,21 @@ export const FilesEditor: React.FC<{ onSaveComplete: (msg: string) => void }> = 
     const isDummyToken = !TOKEN || TOKEN === "ghp_TuTokenDeGitHubDeFirmeEscritura" || TOKEN.startsWith("ghp_TuToken");
 
     try {
+      let finalRepoPath = target.repoPath;
+      let publicPath = target.repoPath.replace(/^public/, "");
+
       // 1. Upload file if selected
       if (file) {
+        const fileExt = file.name.substring(file.name.lastIndexOf('.'));
+        const baseRepoPath = target.repoPath.substring(0, target.repoPath.lastIndexOf('.'));
+        finalRepoPath = `${baseRepoPath}${fileExt}`;
+        publicPath = finalRepoPath.replace(/^public/, "");
+
         if (isDummyToken) {
           await new Promise((resolve) => setTimeout(resolve, 1200));
         } else {
           await uploadBinaryFileToRepo(
-            target.repoPath,
+            finalRepoPath,
             file,
             `[Backoffice] Upload ${editedTitles[target.id] || target.label} — ${file.name}`
           );
@@ -175,7 +183,7 @@ export const FilesEditor: React.FC<{ onSaveComplete: (msg: string) => void }> = 
         if (!updatedTexts.uploadedFiles) {
           updatedTexts.uploadedFiles = {};
         }
-        updatedTexts.uploadedFiles[target.id] = file.name;
+        updatedTexts.uploadedFiles[target.id] = publicPath;
       }
 
       if (target.i18nKey) {

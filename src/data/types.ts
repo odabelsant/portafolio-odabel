@@ -81,6 +81,7 @@ export interface TranslationSchema {
     title: string;
     subtitle: string;
     download: string;
+    view: string;
     [key: string]: string | { name: string; date: string } | undefined;
   };
   video: {

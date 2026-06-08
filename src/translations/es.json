@@ -52,7 +52,8 @@
   "certifications": {
     "title": "Certificaciones",
     "subtitle": "Credenciales y certificaciones oficiales obtenidas en pruebas y desarrollo",
-    "download": "Descargar PDF",
+    "download": "Descargar",
+    "view": "Ver",
     "selenium_java_cucumber": {
       "name": "Selenium WebDriver + Java + Cucumber BDD Automation",
       "date": "Obtenido en 2024"
