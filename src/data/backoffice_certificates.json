@@ -1,13 +1,6 @@
 {
   "certificates": [
     {
-      "id": "selenium-java-cucumber",
-      "title": "Selenium WebDriver + Java + Cucumber BDD Automation",
-      "institution": "Testeando Ya",
-      "year": "2024",
-      "fileUrl": "/certificates/1780932202899-selenium_java.png"
-    },
-    {
       "id": "testing-fundamentals",
       "title": "Fundamentos de Testing de Software",
       "institution": "International Software Testing Institute",
@@ -43,5 +36,5 @@
       "fileUrl": "/recursos/certificado_capacitate_empleo.pdf"
     }
   ],
-  "_updated": "2026-06-08T15:23:26.122Z"
+  "_updated": "2026-06-08T15:28:05.682Z"
 }
