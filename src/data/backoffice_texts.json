@@ -21,15 +21,11 @@
     "cv_es": "Curriculum Vitae (Español)"
   },
   "uploadedFiles": {
-    "cert-jira": "Jira.png",
-    "cert-postman": "/certificates/postman_api.png"
+    "cert-jira": "/certificates/jira_zephyr.png"
   },
   "certifications": {
     "jira_zephyr": {
       "name": "Certificado — Jira & Zephyr"
-    },
-    "postman_api": {
-      "name": "Certificado — Postman & API Testing"
     }
   }
 }
