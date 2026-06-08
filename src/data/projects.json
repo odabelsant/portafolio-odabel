@@ -20,22 +20,6 @@
     "roleKey": "projects.ecommerce_bdd.role"
   },
   {
-    "id": "api-postman-suite",
-    "titleKey": "projects.api_postman.title",
-    "descriptionKey": "projects.api_postman.description",
-    "tech": [
-      "Postman",
-      "Newman",
-      "SQL",
-      "Gitflow",
-      "Jira",
-      "JSON Schema"
-    ],
-    "roleKey": "projects.api_postman.role",
-    "category": "api",
-    "repoUrl": "https://github.com/odabelrunner/api-testing-postman"
-  },
-  {
     "id": "saas-system-testing",
     "titleKey": "projects.saas_testing.title",
     "descriptionKey": "projects.saas_testing.description",
