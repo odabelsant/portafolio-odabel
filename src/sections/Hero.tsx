@@ -112,7 +112,11 @@ export const Hero: React.FC = () => {
                 <ArrowRight className="w-4.5 h-4.5" />
               </button>
 
-              <CVButton variant="secondary" showText={true} />
+              <CVButton
+                variant="secondary"
+                showText={true}
+                className="w-full sm:w-auto justify-center px-7 py-3.5 text-base font-bold shadow-lg"
+              />
             </motion.div>
 
             {/* Float Tech Badges */}
