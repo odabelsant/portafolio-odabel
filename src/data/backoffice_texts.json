@@ -21,11 +21,11 @@
     "cv_es": "Curriculum Vitae (Español)"
   },
   "uploadedFiles": {
-    "cert-selenium": "Selenium + Java.png"
+    "cert-postman": "Postman Api testing.png"
   },
   "certifications": {
-    "selenium_java_cucumber": {
-      "name": "Certificado — Selenium + Cucumber"
+    "postman_api": {
+      "name": "Certificado — Postman & API Testing"
     }
   }
 }
