@@ -34,7 +34,14 @@
       "institution": "Fundación Carlos Slim",
       "year": "2024",
       "fileUrl": "/recursos/certificado_capacitate_empleo.pdf"
+    },
+    {
+      "id": "cert-1780943544901",
+      "title": "Testing Automation Selenium + Java",
+      "institution": "TesteandoYa",
+      "year": "2025",
+      "fileUrl": "/certificates/1780943541709_selenium_java.png"
     }
   ],
-  "_updated": "2026-06-08T18:31:22.023Z"
+  "_updated": "2026-06-08T18:32:24.902Z"
 }
