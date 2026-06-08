@@ -21,11 +21,16 @@
     "cv_es": "Curriculum Vitae (Español)"
   },
   "uploadedFiles": {
-    "cert-jira": "/certificates/jira_zephyr.png"
+    "cert-jira": "/certificates/jira_zephyr.png",
+    "cert-testing": "/certificates/testing_fundamentals.png"
   },
   "certifications": {
     "jira_zephyr": {
       "name": "Certificado — Jira & Zephyr"
+    },
+    "testing_fundamentals": {
+      "name": "Certificado — Testing Fundamentals",
+      "institution": "TesteandoYa"
     }
   }
 }
