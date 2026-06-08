@@ -34,22 +34,6 @@
     "category": "manual"
   },
   {
-    "id": "qa-testdata-generator",
-    "titleKey": "projects.testdata_generator.title",
-    "descriptionKey": "projects.testdata_generator.description",
-    "tech": [
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "LocalStorage",
-      "JSON"
-    ],
-    "roleKey": "projects.testdata_generator.role",
-    "category": "personal",
-    "repoUrl": "https://github.com/odabelrunner/qa-test-data-helper",
-    "demoUrl": "https://qa-test-data-helper.vercel.app"
-  },
-  {
     "id": "playwright-e2e-suite",
     "titleKey": "projects.playwright_suite.title",
     "descriptionKey": "projects.playwright_suite.description",
