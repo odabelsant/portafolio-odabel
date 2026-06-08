@@ -47,14 +47,19 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center pb-8 border-b border-white/5 dark:border-white/5 light:border-slate-200">
           {/* Logo & Brand */}
-          <div className="flex items-center gap-2 justify-center md:justify-start">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white">
+          <a
+            href="https://github.com/odabelsant/portafolio-odabel"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 justify-center md:justify-start hover:opacity-85 transition-opacity duration-300 cursor-pointer group"
+          >
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-300">
               <Shield className="w-4.5 h-4.5" />
             </div>
             <span className="font-display font-bold text-white dark:text-white light:text-slate-900 tracking-wide">
               ODABEL<span className="text-primary font-light">SANTOS</span>
             </span>
-          </div>
+          </a>
 
           {/* Navigation Links */}
           <div className="flex flex-wrap justify-center gap-6 text-sm">

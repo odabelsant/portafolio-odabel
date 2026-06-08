@@ -57,9 +57,10 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo */}
         <a
-          href="#home"
-          onClick={(e) => handleNavClick(e, "home")}
-          className="flex items-center gap-2 group text-white dark:text-white light:text-slate-900 focus:outline-none"
+          href="https://github.com/odabelsant/portafolio-odabel"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 group text-white dark:text-white light:text-slate-900 focus:outline-none hover:opacity-85 transition-opacity duration-300 cursor-pointer"
         >
           <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent shadow-md shadow-primary/20 group-hover:shadow-primary/40 transition-all duration-300">
             <Shield className="w-5 h-5 text-white animate-pulse" />
