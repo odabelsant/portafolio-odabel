@@ -1,15 +1,6 @@
 {
   "education": [
     {
-      "id": "postman-api",
-      "title": "API Testing y Automatización con Postman & Newman",
-      "titleKey": "certifications.postman_api.name",
-      "institution": "Postman Student / Academy",
-      "date": "Obtenido en 2024",
-      "dateKey": "certifications.postman_api.date",
-      "description": "Pruebas de endpoints REST, encadenamiento de requests, aserciones automatizadas en sandbox JavaScript y Newman."
-    },
-    {
       "id": "jira-zephyr",
       "title": "Gestión de Pruebas con Jira & Zephyr",
       "titleKey": "certifications.jira_zephyr.name",
@@ -46,5 +37,5 @@
       "description": "Administración de CMS, customización de temas y estructuración de sitios web básicos autogestionables."
     }
   ],
-  "_updated": "2026-06-15T23:40:46.826Z"
+  "_updated": "2026-06-15T23:40:56.707Z"
 }
