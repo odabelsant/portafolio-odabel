@@ -1,15 +1,6 @@
 {
   "education": [
     {
-      "id": "sel-java-cuc",
-      "title": "Selenium WebDriver + Java + Cucumber BDD Automation",
-      "titleKey": "certifications.selenium_java_cucumber.name",
-      "institution": "Udemy / Global QA Certification",
-      "date": "Obtenido en 2024",
-      "dateKey": "certifications.selenium_java_cucumber.date",
-      "description": "Especialización en creación de frameworks BDD desde cero con Selenium WebDriver, Java, Cucumber y JUnit/TestNG."
-    },
-    {
       "id": "postman-api",
       "title": "API Testing y Automatización con Postman & Newman",
       "titleKey": "certifications.postman_api.name",
@@ -54,5 +45,6 @@
       "dateKey": "certifications.wordpress.date",
       "description": "Administración de CMS, customización de temas y estructuración de sitios web básicos autogestionables."
     }
-  ]
+  ],
+  "_updated": "2026-06-15T23:40:46.826Z"
 }
