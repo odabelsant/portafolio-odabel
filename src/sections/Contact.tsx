@@ -2,43 +2,21 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import {
   Mail, MessageSquare, Send, CheckCircle2,
-  AlertCircle, Copy, Check,
+  AlertCircle, Copy, Check, Clock
 } from "lucide-react";
 import { Linkedin } from "../components/Icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { siteConfig } from "../content/siteContent";
-
-// ─── Formspree endpoint ───────────────────────────────────────────────────────
-// Set VITE_FORMSPREE_ID in your .env.local file or Vercel Environment Variables.
-// Get your form ID at https://formspree.io
-const FORMSPREE_ENDPOINT = `https://formspree.io/f/${import.meta.env.VITE_FORMSPREE_ID ?? ""}`;
+import { contactSchema, type ContactFormData } from "../types/contact";
 
 export const Contact: React.FC = () => {
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error" | "timeout">("idle");
+  const [showWarning, setShowWarning] = useState(false);
   const [copied, setCopied] = useState(false);
-
-  // Schema defined inside the component so error messages are always translated
-  const contactSchema = z.object({
-    name: z
-      .string()
-      .min(1, { message: t("contact.validation.name_required") })
-      .min(3, { message: t("contact.validation.name_min") }),
-    email: z
-      .string()
-      .min(1, { message: t("contact.validation.email_required") })
-      .email({ message: t("contact.validation.email_invalid") }),
-    message: z
-      .string()
-      .min(1, { message: t("contact.validation.message_required") })
-      .min(10, { message: t("contact.validation.message_min") }),
-  });
-
-  type ContactFormData = z.infer<typeof contactSchema>;
 
   const {
     register,
@@ -49,41 +27,54 @@ export const Contact: React.FC = () => {
     resolver: zodResolver(contactSchema),
   });
 
-  // ─── BUG-03 FIX: Real Formspree HTTP POST ──────────────────────────────────
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     setSubmitStatus("idle");
+    setShowWarning(false);
+
+    // AbortController para cancelar la petición a los 5 segundos
+    const controller = new AbortController();
+    const warningTimer = setTimeout(() => {
+      setShowWarning(true); // Muestra aviso preventivo a los 2.5s (RNF-001)
+    }, 2500);
+
+    const abortTimer = setTimeout(() => {
+      controller.abort(); // Fuerza timeout a los 5s
+    }, 5000);
 
     try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          message: data.message,
-          _replyto: data.email,
-          _subject: `[Portfolio Contact] Message from ${data.name}`,
-        }),
+        body: JSON.stringify(data),
+        signal: controller.signal,
       });
 
+      clearTimeout(warningTimer);
+      clearTimeout(abortTimer);
+      setShowWarning(false);
+
       if (!response.ok) {
-        // Formspree returns JSON errors on non-2xx
-        const errorBody = await response.json().catch(() => ({}));
-        console.error("[Contact] Formspree error:", errorBody);
         setSubmitStatus("error");
         return;
       }
 
       setSubmitStatus("success");
-      reset();
-    } catch (err) {
-      // Network / fetch-level failure
-      console.error("[Contact] Network error:", err);
-      setSubmitStatus("error");
+      reset(); // Limpia el formulario solo en caso de éxito
+    } catch (err: any) {
+      clearTimeout(warningTimer);
+      clearTimeout(abortTimer);
+      setShowWarning(false);
+
+      console.error("[Contacto] Error al enviar:", err);
+      if (err.name === "AbortError") {
+        setSubmitStatus("timeout");
+      } else {
+        setSubmitStatus("error");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -115,10 +106,10 @@ export const Contact: React.FC = () => {
   return (
     <section
       id="contact"
-      className="py-24 bg-[#050816] dark:bg-[#050816] text-white border-t border-white/5 transition-colors duration-300"
+      className="py-24 bg-[#050816] text-white border-t border-white/5 transition-colors duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Encabezado */}
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-extrabold font-display tracking-tight mb-4">
             {t("contact.title")}
@@ -129,9 +120,9 @@ export const Contact: React.FC = () => {
           </p>
         </div>
 
-        {/* Contact Layout */}
+        {/* Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Left Column: Direct Links & Info */}
+          {/* Información Directa */}
           <div className="lg:col-span-5 space-y-6 text-left">
             <h3 className="text-xl font-bold font-display mb-6">
               {t("contact.direct_title")}
@@ -153,18 +144,15 @@ export const Contact: React.FC = () => {
               <button
                 type="button"
                 onClick={copyEmailToClipboard}
-                className="p-2.5 rounded-xl border border-white/10 hover:border-primary/50 hover:bg-primary/5 text-slate-400 hover:text-primary transition-all duration-200 focus:outline-none"
-                aria-label="Copiar correo al portapapeles"
-                title="Copiar correo al portapapeles"
+                className="p-2.5 rounded-xl border border-white/10 hover:border-primary/50 hover:bg-primary/5 text-slate-400 hover:text-primary transition-all duration-200 focus:outline-none cursor-pointer"
+                aria-label="Copiar correo"
+                title="Copiar correo"
               >
-                {copied
-                  ? <Check className="w-4 h-4 text-emerald-400" />
-                  : <Copy className="w-4 h-4" />
-                }
+                {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
 
-            {/* Other Contacts */}
+            {/* Otros Contactos */}
             {directContacts.map((contact) => (
               <a
                 key={contact.name}
@@ -189,95 +177,94 @@ export const Contact: React.FC = () => {
             ))}
           </div>
 
-          {/* Right Column: Contact Form */}
+          {/* Formulario */}
           <div className="lg:col-span-7">
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="glass-panel p-6 sm:p-8 rounded-2xl border border-white/5 shadow-xl space-y-6 text-left"
               noValidate
             >
-              {/* Name Field */}
+              {/* Campo Honeypot - Oculto para Usuarios, visible para Bots */}
+              <div className="hidden" aria-hidden="true">
+                <input
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  placeholder="Tu sitio web"
+                  {...register("website")}
+                />
+              </div>
+
+              {/* Nombre */}
               <div className="space-y-2">
-                <label
-                  htmlFor="contact-name"
-                  className="block text-sm font-semibold text-slate-300"
-                >
+                <label htmlFor="contact-name" className="block text-sm font-semibold text-slate-300">
                   {t("contact.name_label")}
                 </label>
                 <input
                   id="contact-name"
                   type="text"
+                  disabled={isSubmitting}
                   placeholder={t("contact.name_placeholder")}
                   {...register("name")}
                   className={`w-full px-4 py-3 rounded-xl bg-slate-950/60 text-white border ${
-                    errors.name
-                      ? "border-rose-500 focus:border-rose-500"
-                      : "border-white/10 focus:border-primary"
-                  } focus:outline-none transition-all duration-300`}
+                    errors.name ? "border-rose-500 focus:border-rose-500" : "border-white/10 focus:border-primary"
+                  } focus:outline-none transition-all duration-300 disabled:opacity-50`}
                 />
                 {errors.name && (
                   <p className="text-xs text-rose-500 font-medium flex items-center gap-1">
                     <AlertCircle className="w-3.5 h-3.5" />
-                    <span>{errors.name.message}</span>
+                    <span>{t(errors.name.message || "")}</span>
                   </p>
                 )}
               </div>
 
-              {/* Email Field */}
+              {/* Correo */}
               <div className="space-y-2">
-                <label
-                  htmlFor="contact-email"
-                  className="block text-sm font-semibold text-slate-300"
-                >
+                <label htmlFor="contact-email" className="block text-sm font-semibold text-slate-300">
                   {t("contact.email_label")}
                 </label>
                 <input
                   id="contact-email"
                   type="email"
+                  disabled={isSubmitting}
                   placeholder={t("contact.email_placeholder")}
                   {...register("email")}
                   className={`w-full px-4 py-3 rounded-xl bg-slate-950/60 text-white border ${
-                    errors.email
-                      ? "border-rose-500 focus:border-rose-500"
-                      : "border-white/10 focus:border-primary"
-                  } focus:outline-none transition-all duration-300`}
+                    errors.email ? "border-rose-500 focus:border-rose-500" : "border-white/10 focus:border-primary"
+                  } focus:outline-none transition-all duration-300 disabled:opacity-50`}
                 />
                 {errors.email && (
                   <p className="text-xs text-rose-500 font-medium flex items-center gap-1">
                     <AlertCircle className="w-3.5 h-3.5" />
-                    <span>{errors.email.message}</span>
+                    <span>{t(errors.email.message || "")}</span>
                   </p>
                 )}
               </div>
 
-              {/* Message Field */}
+              {/* Mensaje */}
               <div className="space-y-2">
-                <label
-                  htmlFor="contact-message"
-                  className="block text-sm font-semibold text-slate-300"
-                >
+                <label htmlFor="contact-message" className="block text-sm font-semibold text-slate-300">
                   {t("contact.message_label")}
                 </label>
                 <textarea
                   id="contact-message"
                   rows={5}
+                  disabled={isSubmitting}
                   placeholder={t("contact.message_placeholder")}
                   {...register("message")}
                   className={`w-full px-4 py-3 rounded-xl bg-slate-950/60 text-white border ${
-                    errors.message
-                      ? "border-rose-500 focus:border-rose-500"
-                      : "border-white/10 focus:border-primary"
-                  } focus:outline-none transition-all duration-300 resize-none`}
+                    errors.message ? "border-rose-500 focus:border-rose-500" : "border-white/10 focus:border-primary"
+                  } focus:outline-none transition-all duration-300 resize-none disabled:opacity-50`}
                 />
                 {errors.message && (
                   <p className="text-xs text-rose-500 font-medium flex items-center gap-1">
                     <AlertCircle className="w-3.5 h-3.5" />
-                    <span>{errors.message.message}</span>
+                    <span>{t(errors.message.message || "")}</span>
                   </p>
                 )}
               </div>
 
-              {/* Submit Button */}
+              {/* Botón de Enviar */}
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -286,11 +273,7 @@ export const Contact: React.FC = () => {
               >
                 {isSubmitting ? (
                   <>
-                    <svg
-                      className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path
                         className="opacity-75"
@@ -298,18 +281,30 @@ export const Contact: React.FC = () => {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       />
                     </svg>
-                    <span>{t("contact.submit_sending")}</span>
+                    <span>{t("contact.btn.sending")}</span>
                   </>
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    <span>{t("contact.submit_btn")}</span>
+                    <span>{submitStatus === "error" || submitStatus === "timeout" ? t("contact.btn.retry") : t("contact.btn.send")}</span>
                   </>
                 )}
               </button>
 
-              {/* Success / Error States */}
+              {/* Alertas preventivas y de estado */}
               <AnimatePresence>
+                {showWarning && isSubmitting && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-semibold flex items-center gap-2"
+                  >
+                    <Clock className="w-4 h-4 animate-pulse flex-shrink-0" />
+                    <span>{t("contact.feedback.error_timeout")}</span>
+                  </motion.div>
+                )}
+
                 {submitStatus === "success" && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -319,7 +314,10 @@ export const Contact: React.FC = () => {
                     role="status"
                   >
                     <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
-                    <span>{t("contact.submit_success")}</span>
+                    <div>
+                      <p className="font-bold">{t("contact.feedback.success_title")}</p>
+                      <p className="text-xs opacity-90">{t("contact.feedback.success_desc")}</p>
+                    </div>
                   </motion.div>
                 )}
 
@@ -332,7 +330,20 @@ export const Contact: React.FC = () => {
                     role="alert"
                   >
                     <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                    <span>{t("contact.submit_error")}</span>
+                    <span>{t("contact.feedback.error_generic")}</span>
+                  </motion.div>
+                )}
+
+                {submitStatus === "timeout" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/25 text-rose-400 text-sm font-semibold flex items-center gap-2"
+                    role="alert"
+                  >
+                    <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                    <span>{t("contact.feedback.error_timeout")}</span>
                   </motion.div>
                 )}
               </AnimatePresence>
