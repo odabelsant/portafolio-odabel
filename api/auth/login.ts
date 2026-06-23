@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import * as z from "zod";
-import { signToken, comparePasswords } from "../utils/auth";
+import { signToken, comparePasswords } from "../utils/auth.js";
 
 const loginSchema = z.object({
   email: z.string().email(),
