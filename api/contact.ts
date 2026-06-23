@@ -29,7 +29,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const allowedOrigin = "https://odabel.com"; // Ajustar al dominio final
   const requestOrigin = req.headers.origin;
 
-  if (process.env.NODE_ENV === "production" && requestOrigin !== allowedOrigin) {
+  const isAllowedOrigin =
+    !requestOrigin ||
+    requestOrigin === allowedOrigin ||
+    requestOrigin.endsWith(".vercel.app");
+
+  if (process.env.NODE_ENV === "production" && !isAllowedOrigin) {
     return res.status(403).json({ success: false, error: "Access Denied: Origin not allowed" });
   }
 

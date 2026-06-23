@@ -10,24 +10,24 @@ export const certificacionesMock: CertificacionMock[] = [
     id: "testing-fundamentals",
     titulo: "Testing Fundamentals",
     plataforma: "International Software Testing Institute",
-    imageUrl: "/recursos/Testing Fundamentals.png",
+    imageUrl: "/recursos/Testing_Fundamentals.png",
   },
   {
     id: "selenium-java-cucumber-bdd",
     titulo: "Selenium con Java Cucumber BDD",
     plataforma: "Udemy",
-    imageUrl: "/recursos/Selenium con Java Cucumber BDD.png",
+    imageUrl: "/recursos/Selenium_con_Java_Cucumber_BDD.png",
   },
   {
     id: "jira-zephyr",
     titulo: "Jira & Zephyr",
     plataforma: "SmartBear Academy",
-    imageUrl: "/recursos/Jira & Zephyr.png",
+    imageUrl: "/recursos/Jira_Zephyr.png",
   },
   {
     id: "postman-api-testing",
     titulo: "Postman & API Testing",
     plataforma: "Postman Academy",
-    imageUrl: "/recursos/Postman & API Testing.png",
+    imageUrl: "/recursos/Postman_API_Testing.png",
   },
 ];
