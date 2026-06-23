@@ -1,14 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Download, Award, Calendar, FileCheck, Eye } from "lucide-react";
+import { Award } from "lucide-react";
 import { motion } from "framer-motion";
-import backofficeCertificates from "../data/backoffice_certificates.json";
-import type { BackofficeCertificates } from "../data/types";
+import { certificacionesMock } from "../data/certificacionesMock";
 
 export const Certifications: React.FC = () => {
   const { t } = useTranslation();
-  const certificatesPayload = backofficeCertificates as BackofficeCertificates;
-  const certificates = certificatesPayload.certificates || [];
 
   return (
     <section
@@ -27,62 +24,49 @@ export const Certifications: React.FC = () => {
           </p>
         </div>
 
-        {/* Certifications Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {certificates.map((cert, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {certificacionesMock.map((cert, index) => (
             <motion.div
               key={cert.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="glass-panel p-6 rounded-2xl border border-white/5 shadow-xl flex flex-col justify-between hover:border-primary/30 hover:shadow-primary/5 transition-all duration-300 group"
+              className="rounded-xl bg-slate-900/40 border border-slate-700/50 p-4 hover:scale-[1.02] transition-all duration-300"
             >
-              <div>
-                {/* Certification Icon & Date */}
-                <div className="flex items-center justify-between gap-4 mb-4">
-                  <div className="p-2.5 rounded-xl bg-slate-900/60 text-primary group-hover:scale-105 transition-transform duration-300">
-                    <Award className="w-5 h-5" />
-                  </div>
-                  <span className="flex items-center gap-1 text-xs font-semibold text-slate-400">
-                    <Calendar className="w-3.5 h-3.5" />
-                    {cert.year}
-                  </span>
-                </div>
-                {/* Certificate Name & Issuer */}
-                <h3 className="text-base sm:text-lg font-bold text-left mb-1.5 line-clamp-2 group-hover:text-primary transition-colors">
-                  {cert.title}
-                </h3>
-                <p className="text-sm font-medium text-slate-400 text-left mb-6 flex items-center gap-1">
-                  <FileCheck className="w-4 h-4 text-slate-500 flex-shrink-0" />
-                  <span>{cert.institution}</span>
-                </p>
+              <div className="flex items-center justify-between mb-3">
+                <span className="inline-flex items-center gap-1.5 text-xs text-slate-300 bg-slate-800/70 border border-slate-700 px-2.5 py-1 rounded-full">
+                  <Award className="w-3.5 h-3.5 text-primary" />
+                  Certificación
+                </span>
               </div>
 
-              {/* Actions: Download & View */}
-              <div className="flex gap-3 mt-auto w-full">
-                {/* Download Button */}
-                <a
-                  href={cert.fileUrl}
-                  download
-                  className="flex-1 flex items-center justify-center gap-2 py-3 border border-primary/20 hover:border-primary/60 hover:bg-primary/5 text-primary hover:text-secondary rounded-xl font-semibold text-sm transition-all duration-300 focus:outline-none"
-                  aria-label={`${t("certifications.download")} — ${cert.title}`}
-                >
-                  <Download className="w-4 h-4" />
-                  <span>{t("certifications.download")}</span>
-                </a>
+              <div className="overflow-hidden rounded-lg border border-slate-700/60 bg-slate-950/40 mb-4">
+                <img
+                  src={cert.imageUrl}
+                  alt={cert.titulo}
+                  className="w-full h-44 object-cover"
+                  loading="lazy"
+                />
+              </div>
 
-                {/* View Button */}
-                <a
-                  href={cert.fileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 py-3 border border-white/10 hover:border-white/30 bg-white/5 hover:bg-white/10 text-white rounded-xl font-semibold text-sm transition-all duration-300 focus:outline-none"
-                  aria-label={`${t("certifications.view")} — ${cert.title}`}
-                >
-                  <Eye className="w-4 h-4 text-slate-400" />
-                  <span>{t("certifications.view")}</span>
-                </a>
+              <div>
+                <h3 className="text-sm md:text-base font-bold text-white mb-1 line-clamp-2">
+                  {cert.titulo}
+                </h3>
+                <p className="text-xs text-slate-400">
+                  {cert.plataforma}
+                </p>
+                <div className="mt-4">
+                  <a
+                    href={cert.imageUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center w-full py-2.5 px-3 rounded-lg text-sm font-semibold text-primary border border-primary/30 hover:border-primary/70 hover:bg-primary/10 transition-colors"
+                  >
+                    {t("certifications.view")}
+                  </a>
+                </div>
               </div>
             </motion.div>
           ))}
