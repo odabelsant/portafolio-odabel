@@ -57,15 +57,24 @@ export const Certifications: React.FC = () => {
                 <p className="text-xs text-slate-400">
                   {cert.plataforma}
                 </p>
-                <div className="mt-4">
+                <div className="flex gap-3 mt-4">
                   <a
                     href={cert.imageUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center w-full py-2.5 px-3 rounded-lg text-sm font-semibold text-primary border border-primary/30 hover:border-primary/70 hover:bg-primary/10 transition-colors"
+                    className="flex-1 inline-flex items-center justify-center py-2.5 px-3 rounded-lg text-sm font-semibold text-primary border border-primary/30 hover:border-primary/70 hover:bg-primary/10 transition-colors"
                   >
                     {t("certifications.view")}
                   </a>
+                  {cert.pdfUrl && (
+                    <a
+                      href={cert.pdfUrl}
+                      download
+                      className="flex-1 inline-flex items-center justify-center py-2.5 px-3 rounded-lg text-sm font-semibold text-slate-300 border border-slate-700 hover:border-slate-500 hover:bg-slate-800/40 transition-colors"
+                    >
+                      {t("certifications.download")}
+                    </a>
+                  )}
                 </div>
               </div>
             </motion.div>
