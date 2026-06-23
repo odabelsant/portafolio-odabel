@@ -9,7 +9,7 @@ import { AdminDashboard } from "./AdminDashboard";
  */
 export const AdminRoute: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-    sessionStorage.getItem("admin_auth") === "true"
+    !!sessionStorage.getItem("admin_token")
   );
 
   const handleLoginSuccess = () => {
@@ -17,7 +17,7 @@ export const AdminRoute: React.FC = () => {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem("admin_auth");
+    sessionStorage.removeItem("admin_token");
     setIsAuthenticated(false);
   };
 

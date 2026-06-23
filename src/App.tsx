@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
 import { Routes, Route, Link } from "react-router-dom";
 import { ShieldAlert, ArrowLeft } from "lucide-react";
+import { siteConfig } from "./content/siteContent";
+import { projectsData } from "./data/projects";
 
 // Layout & Global Components
 import { Header } from "./layout/Header";
@@ -77,7 +79,84 @@ const NotFound: React.FC = () => {
 
 const App: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const currentLang = i18n.language.split("-")[0];
+  const [isContentLoading, setIsContentLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadContent() {
+      try {
+        const res = await fetch("/api/content");
+        if (res.ok) {
+          const contents = await res.json();
+          for (const item of contents) {
+            if (item.key === "backoffice_texts") {
+              const texts = JSON.parse(item.value);
+              i18n.addResourceBundle("es", "translation", texts, true, true);
+            } else if (item.key === "backoffice_youtube") {
+              const yt = JSON.parse(item.value);
+              siteConfig.youtubeES = yt.urlES || siteConfig.youtubeES;
+              siteConfig.youtubeEN = yt.urlEN || siteConfig.youtubeEN;
+            } else if (item.key === "backoffice_skills") {
+              const skillsData = JSON.parse(item.value);
+              if (skillsData.categories) {
+                siteConfig.skillsCategories.length = 0;
+                siteConfig.skillsCategories.push(...skillsData.categories.map((cat: any) => ({
+                  id: cat.id,
+                  titleKey: cat.titleKey || "",
+                  title: cat.title || "",
+                  skills: (cat.skills || []).map((s: any) => ({
+                    name: s.name,
+                    level: s.level,
+                    icon: s.icon
+                  }))
+                })));
+              }
+            } else if (item.key === "backoffice_education") {
+              const eduData = JSON.parse(item.value);
+              if (eduData.education) {
+                siteConfig.education.length = 0;
+                siteConfig.education.push(...eduData.education.map((edu: any) => ({
+                  id: edu.id,
+                  title: edu.title || "",
+                  titleKey: edu.titleKey || "",
+                  institution: edu.institution || "",
+                  date: edu.date || "",
+                  dateKey: edu.dateKey || "",
+                  description: edu.description || ""
+                })));
+              }
+            } else if (item.key === "projects") {
+              const projList = JSON.parse(item.value);
+              if (Array.isArray(projList)) {
+                projectsData.length = 0;
+                projectsData.push(...projList);
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error loading content from API:", err);
+      } finally {
+        setIsContentLoading(false);
+      }
+    }
+    loadContent();
+  }, [i18n]);
+
+  const currentLang = i18n.language ? i18n.language.split("-")[0] : "es";
+
+  if (isContentLoading) {
+    return (
+      <div className="min-h-screen bg-[#050816] flex flex-col items-center justify-center text-white relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-pulse" />
+        </div>
+        <div className="relative z-10 flex flex-col items-center gap-4">
+          <div className="w-12 h-12 rounded-full border-4 border-slate-800 border-t-primary animate-spin" />
+          <p className="text-sm text-slate-400 font-semibold tracking-wider animate-pulse">Cargando portafolio...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

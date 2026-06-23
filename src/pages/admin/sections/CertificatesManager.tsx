@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
   AlertCircle,
   Award,
@@ -12,12 +12,11 @@ import {
   X
 } from "lucide-react";
 import {
-  deleteFileFromRepo,
-  updateTextFileInRepo,
-  uploadBinaryFileToRepo
-} from "../../../services/githubApiService";
-import initialCertificates from "../../../data/backoffice_certificates.json";
-import type { BackofficeCertificates, Certificate } from "../../../data/types";
+  createCertificate,
+  updateCertificate as apiUpdateCertificate,
+  deleteCertificate as apiDeleteCertificate
+} from "../../../services/apiService";
+import type { Certificate } from "../../../data/types";
 
 interface CertificatesManagerProps {
   onSaveComplete: (msg: string) => void;
@@ -34,12 +33,6 @@ const toSafeFileName = (fileName: string) =>
 const buildPublicCertificateUrlFromFile = (file: File) =>
   `/certificates/${Date.now()}_${toSafeFileName(file.name)}`;
 
-const publicUrlToRepoPath = (fileUrl: string): string | null => {
-  if (!fileUrl.startsWith("/")) return null;
-  if (!fileUrl.startsWith("/certificates/")) return null;
-  return `public${fileUrl}`;
-};
-
 const getFileIcon = (fileUrl: string) => {
   const normalized = fileUrl.toLowerCase();
   if (normalized.endsWith(".png") || normalized.endsWith(".jpg") || normalized.endsWith(".jpeg")) {
@@ -50,8 +43,7 @@ const getFileIcon = (fileUrl: string) => {
 };
 
 export const CertificatesManager: React.FC<CertificatesManagerProps> = ({ onSaveComplete }) => {
-  const certificatesPayload = initialCertificates as BackofficeCertificates;
-  const [items, setItems] = useState<Certificate[]>(() => certificatesPayload.certificates || []);
+  const [items, setItems] = useState<Certificate[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeItem, setActiveItem] = useState<Certificate | null>(null);
@@ -62,6 +54,21 @@ export const CertificatesManager: React.FC<CertificatesManagerProps> = ({ onSave
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "success" | "error">("idle");
   const [saveMessage, setSaveMessage] = useState("");
+
+  useEffect(() => {
+    async function loadCertificates() {
+      try {
+        const response = await fetch("/api/certificates");
+        if (response.ok) {
+          const data = await response.json();
+          setItems(data);
+        }
+      } catch (err) {
+        console.error("Error loading certificates in backoffice:", err);
+      }
+    }
+    loadCertificates();
+  }, []);
 
   const filteredItems = useMemo(() => {
     const query = searchQuery.toLowerCase().trim();
@@ -98,58 +105,6 @@ export const CertificatesManager: React.FC<CertificatesManagerProps> = ({ onSave
     setIsModalOpen(true);
   };
 
-  const validateCertificates = (certificates: Certificate[]) => {
-    certificates.forEach((certificate) => {
-      if (!certificate.title || certificate.title.trim().length < 3) {
-        throw new Error("El título del certificado debe tener al menos 3 caracteres.");
-      }
-      if (!certificate.institution || certificate.institution.trim().length < 2) {
-        throw new Error("La institución del certificado es obligatoria.");
-      }
-      if (!certificate.year || certificate.year.trim().length < 2) {
-        throw new Error("El año del certificado es obligatorio.");
-      }
-      if (!certificate.fileUrl || !certificate.fileUrl.startsWith("/")) {
-        throw new Error("La ruta del archivo debe ser absoluta desde public, por ejemplo /certificates/certificado.pdf.");
-      }
-      if (!/\.(pdf|png|jpg|jpeg)$/i.test(certificate.fileUrl)) {
-        throw new Error("El archivo del certificado debe ser PDF, PNG, JPG o JPEG.");
-      }
-    });
-  };
-
-  const persistCertificatesJson = async (updatedList: Certificate[], actionLabel: string) => {
-    setSaveStatus("saving");
-    setSaveMessage("Persistiendo certificados en GitHub...");
-
-    const TOKEN = import.meta.env.VITE_GITHUB_TOKEN as string;
-    const isDummyToken = !TOKEN || TOKEN === "ghp_TuTokenDeGitHubDeFirmeEscritura" || TOKEN.startsWith("ghp_TuToken");
-
-    try {
-      validateCertificates(updatedList);
-
-      const payload: BackofficeCertificates = {
-        certificates: updatedList,
-        _updated: new Date().toISOString()
-      };
-
-      if (isDummyToken) {
-        await new Promise((resolve) => setTimeout(resolve, 900));
-      } else {
-        await updateTextFileInRepo(
-          "src/data/backoffice_certificates.json",
-          JSON.stringify(payload, null, 2),
-          `[Backoffice] Certificates JSON — ${actionLabel}`
-        );
-      }
-
-      setItems(updatedList);
-    } catch (err) {
-      const errMsg = err instanceof Error ? err.message : String(err);
-      throw new Error(`Error al persistir JSON: ${errMsg}`);
-    }
-  };
-
   const handleFileChange = (file: File | null) => {
     setSelectedFile(file);
     if (file) {
@@ -162,31 +117,11 @@ export const CertificatesManager: React.FC<CertificatesManagerProps> = ({ onSave
     setSaveStatus("saving");
 
     try {
-      const TOKEN = import.meta.env.VITE_GITHUB_TOKEN as string;
-      const isDummyToken = !TOKEN || TOKEN === "ghp_TuTokenDeGitHubDeFirmeEscritura" || TOKEN.startsWith("ghp_TuToken");
       const isEditing = Boolean(activeItem);
-
       let finalFileUrl = formFileUrl.trim();
-      let oldFileRepoPathToDelete: string | null = null;
 
       if (selectedFile) {
         finalFileUrl = buildPublicCertificateUrlFromFile(selectedFile);
-        const newFileRepoPath = `public${finalFileUrl}`;
-
-        if (isDummyToken) {
-          await new Promise((resolve) => setTimeout(resolve, 500));
-        } else {
-          setSaveMessage("Subiendo archivo físico del certificado...");
-          await uploadBinaryFileToRepo(
-            newFileRepoPath,
-            selectedFile,
-            `[Backoffice] Certificates Asset — ${isEditing ? "update" : "create"} ${finalFileUrl}`
-          );
-        }
-
-        if (activeItem?.fileUrl && activeItem.fileUrl !== finalFileUrl) {
-          oldFileRepoPathToDelete = publicUrlToRepoPath(activeItem.fileUrl);
-        }
       }
 
       const itemData: Certificate = {
@@ -197,18 +132,18 @@ export const CertificatesManager: React.FC<CertificatesManagerProps> = ({ onSave
         fileUrl: finalFileUrl
       };
 
-      const updatedList = activeItem
-        ? items.map((item) => (item.id === activeItem.id ? itemData : item))
-        : [...items, itemData];
+      if (isEditing) {
+        setSaveMessage("Guardando cambios del certificado en la base de datos...");
+        await apiUpdateCertificate(itemData);
+      } else {
+        setSaveMessage("Creando nuevo certificado en la base de datos...");
+        await createCertificate(itemData);
+      }
 
-      await persistCertificatesJson(updatedList, isEditing ? "updated" : "created");
-
-      if (oldFileRepoPathToDelete && !isDummyToken) {
-        setSaveMessage("Eliminando archivo físico anterior...");
-        await deleteFileFromRepo(
-          oldFileRepoPathToDelete,
-          `[Backoffice] Certificates Asset Cleanup — ${oldFileRepoPathToDelete}`
-        );
+      const response = await fetch("/api/certificates");
+      if (response.ok) {
+        const data = await response.json();
+        setItems(data);
       }
 
       setSaveStatus("success");
@@ -226,21 +161,14 @@ export const CertificatesManager: React.FC<CertificatesManagerProps> = ({ onSave
   const handleDelete = async (id: string, title: string) => {
     if (window.confirm(`¿Seguro que deseas eliminar el certificado "${title}"?`)) {
       setSaveStatus("saving");
+      setSaveMessage("Eliminando certificado de la base de datos...");
       try {
-        const targetItem = items.find((item) => item.id === id) || null;
-        const updatedList = items.filter((item) => item.id !== id);
-        await persistCertificatesJson(updatedList, "deleted");
+        await apiDeleteCertificate(id);
 
-        const TOKEN = import.meta.env.VITE_GITHUB_TOKEN as string;
-        const isDummyToken = !TOKEN || TOKEN === "ghp_TuTokenDeGitHubDeFirmeEscritura" || TOKEN.startsWith("ghp_TuToken");
-        const fileRepoPath = targetItem?.fileUrl ? publicUrlToRepoPath(targetItem.fileUrl) : null;
-
-        if (fileRepoPath && !isDummyToken) {
-          setSaveMessage("Eliminando archivo físico del certificado...");
-          await deleteFileFromRepo(
-            fileRepoPath,
-            `[Backoffice] Certificates Asset Delete — ${fileRepoPath}`
-          );
+        const response = await fetch("/api/certificates");
+        if (response.ok) {
+          const data = await response.json();
+          setItems(data);
         }
 
         setSaveStatus("success");

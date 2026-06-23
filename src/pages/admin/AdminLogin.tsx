@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Shield, Eye, EyeOff, Lock, AlertCircle } from "lucide-react";
-
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD as string;
+import { Shield, Eye, EyeOff, Lock, AlertCircle, Mail } from "lucide-react";
 
 interface AdminLoginProps {
   onSuccess: () => void;
 }
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onSuccess }) => {
+  const [email, setEmail] = useState("odabelrunner@gmail.com");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -19,24 +18,29 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onSuccess }) => {
     setError("");
     setIsLoading(true);
 
-    // Simulate brief auth delay for UX
-    await new Promise((r) => setTimeout(r, 600));
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (!ADMIN_PASSWORD) {
-      setError("Variable VITE_ADMIN_PASSWORD no está configurada en el entorno.");
+      const data = await response.json();
+
+      if (response.ok && data.success && data.token) {
+        sessionStorage.setItem("admin_token", data.token);
+        onSuccess();
+      } else {
+        setError(data.error || "Credenciales incorrectas. Inténtalo de nuevo.");
+        setPassword("");
+      }
+    } catch (err) {
+      setError("Error de conexión al servidor de autenticación.");
+    } finally {
       setIsLoading(false);
-      return;
     }
-
-    if (password === ADMIN_PASSWORD) {
-      sessionStorage.setItem("admin_auth", "true");
-      onSuccess();
-    } else {
-      setError("Contraseña incorrecta. Inténtalo de nuevo.");
-      setPassword("");
-    }
-
-    setIsLoading(false);
   };
 
   return (
@@ -71,7 +75,33 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onSuccess }) => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email Field */}
+            <div className="space-y-2">
+              <label
+                htmlFor="admin-email"
+                className="block text-sm font-semibold text-slate-300"
+              >
+                Correo Electrónico
+              </label>
+              <div className="relative">
+                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
+                  <Mail className="w-4 h-4" />
+                </div>
+                <input
+                  id="admin-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="admin@ejemplo.com"
+                  required
+                  autoComplete="email"
+                  className="w-full pl-10 pr-4 py-3.5 rounded-xl bg-slate-950/70 text-white border border-white/10 focus:border-primary focus:outline-none transition-all duration-300 placeholder:text-slate-600 text-sm"
+                />
+              </div>
+            </div>
+
+            {/* Password Field */}
             <div className="space-y-2">
               <label
                 htmlFor="admin-password"
@@ -91,7 +121,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onSuccess }) => {
                   placeholder="Introduce la contraseña..."
                   required
                   autoComplete="current-password"
-                  className="w-full pl-10 pr-12 py-3.5 rounded-xl bg-slate-950/70 text-white border border-white/10 focus:border-primary focus:outline-none transition-all duration-300 placeholder:text-slate-600"
+                  className="w-full pl-10 pr-12 py-3.5 rounded-xl bg-slate-950/70 text-white border border-white/10 focus:border-primary focus:outline-none transition-all duration-300 placeholder:text-slate-600 text-sm"
                 />
                 <button
                   type="button"
@@ -120,7 +150,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onSuccess }) => {
             {/* Submit */}
             <button
               type="submit"
-              disabled={isLoading || !password}
+              disabled={isLoading || !password || !email}
               id="admin-login-btn"
               className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 disabled:from-slate-700 disabled:to-slate-700 text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 cursor-pointer disabled:cursor-not-allowed"
             >

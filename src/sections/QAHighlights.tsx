@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { FileText, Bug, Code2, CheckSquare, TrendingDown, ShieldAlert, FileSpreadsheet, type LucideProps } from "lucide-react";
 import { motion } from "framer-motion";
-import { siteConfig } from "../content/siteContent";
+
+interface Metric {
+  id: string;
+  label: string;
+  value: string;
+  icon: string;
+  labelKey: string;
+}
 
 // Lucide icon helper mapping for dynamic rendering
 const iconMap: Record<string, React.ComponentType<LucideProps>> = {
@@ -18,8 +25,37 @@ const MetricIcon: React.FC<{ name: string; className?: string }> = ({ name, clas
   return <IconComponent className={className} />;
 };
 
+const MetricSkeleton = () => (
+  <div className="glass-panel p-6 rounded-2xl border border-white/5 shadow-xl text-center animate-pulse">
+    <div className="inline-flex p-3 rounded-xl bg-slate-800 w-12 h-12 mb-4 mx-auto" />
+    <div className="w-20 h-8 bg-slate-800 rounded mx-auto mb-2" />
+    <div className="w-28 h-4 bg-slate-800 rounded mx-auto" />
+  </div>
+);
+
 export const QAHighlights: React.FC = () => {
   const { t } = useTranslation();
+  const [metrics, setMetrics] = useState<Metric[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchMetrics() {
+      try {
+        const response = await fetch("/api/metrics");
+        if (!response.ok) {
+          throw new Error("Failed to fetch QA metrics");
+        }
+        const data = await response.json();
+        setMetrics(data);
+      } catch (err: any) {
+        setError(err.message || "Failed to load QA metrics");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchMetrics();
+  }, []);
 
   const impactCases = [
     {
@@ -58,29 +94,42 @@ export const QAHighlights: React.FC = () => {
 
         {/* Quantitative Metrics Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-          {siteConfig.metrics.map((metric, index) => (
-            <motion.div
-              key={metric.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="glass-panel p-6 rounded-2xl border border-white/5 dark:border-white/5 light:border-slate-200 shadow-xl text-center hover:border-primary/20 hover:-translate-y-1 transition-all duration-300"
-            >
-              {/* Metric Icon */}
-              <div className="inline-flex p-3 rounded-xl bg-slate-900/60 dark:bg-slate-900/60 light:bg-slate-100 text-primary mb-4">
-                <MetricIcon name={metric.icon} className="w-6 h-6" />
-              </div>
-              {/* Metric Value */}
-              <p className="text-3xl sm:text-4xl font-extrabold font-display bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-                {metric.value}
-              </p>
-              {/* Metric Title */}
-              <p className="text-xs sm:text-sm font-semibold text-slate-400 dark:text-slate-400 light:text-slate-600 uppercase tracking-wider">
-                {metric.label || (metric.labelKey ? t(metric.labelKey) : "")}
-              </p>
-            </motion.div>
-          ))}
+          {isLoading ? (
+            <>
+              <MetricSkeleton />
+              <MetricSkeleton />
+              <MetricSkeleton />
+              <MetricSkeleton />
+            </>
+          ) : error ? (
+            <div className="col-span-2 lg:col-span-4 text-center py-6 text-rose-400">
+              {error}
+            </div>
+          ) : (
+            metrics.map((metric, index) => (
+              <motion.div
+                key={metric.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="glass-panel p-6 rounded-2xl border border-white/5 dark:border-white/5 light:border-slate-200 shadow-xl text-center hover:border-primary/20 hover:-translate-y-1 transition-all duration-300"
+              >
+                {/* Metric Icon */}
+                <div className="inline-flex p-3 rounded-xl bg-slate-900/60 dark:bg-slate-900/60 light:bg-slate-100 text-primary mb-4">
+                  <MetricIcon name={metric.icon} className="w-6 h-6" />
+                </div>
+                {/* Metric Value */}
+                <p className="text-3xl sm:text-4xl font-extrabold font-display bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
+                  {metric.value}
+                </p>
+                {/* Metric Title */}
+                <p className="text-xs sm:text-sm font-semibold text-slate-400 dark:text-slate-400 light:text-slate-600 uppercase tracking-wider">
+                  {metric.label || (metric.labelKey ? t(metric.labelKey) : "")}
+                </p>
+              </motion.div>
+            ))
+          )}
         </div>
 
         {/* Qualitative Case Studies */}

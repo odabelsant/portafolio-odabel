@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Plus, Edit2, Trash2, Eye, X, Check,
   AlertCircle, CheckCircle2, Award, Sliders
 } from "lucide-react";
-import { updateTextFileInRepo } from "../../../services/githubApiService";
-import initialSkills from "../../../data/backoffice_skills.json";
+import { saveContent } from "../../../services/apiService";
 
 interface Skill {
   name: string;
@@ -41,9 +40,7 @@ const DEFAULT_CATEGORIES: SkillCategory[] = [
 ];
 
 export const SkillsManager: React.FC<{ onSaveComplete: (msg: string) => void }> = ({ onSaveComplete }) => {
-  const [categories, setCategories] = useState<SkillCategory[]>(() => {
-    return (initialSkills.categories as SkillCategory[]) || DEFAULT_CATEGORIES;
-  });
+  const [categories, setCategories] = useState<SkillCategory[]>(DEFAULT_CATEGORIES);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,6 +54,27 @@ export const SkillsManager: React.FC<{ onSaveComplete: (msg: string) => void }> 
   // Save State
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "success" | "error">("idle");
   const [saveMessage, setSaveMessage] = useState("");
+
+  useEffect(() => {
+    async function loadSkills() {
+      try {
+        const response = await fetch("/api/content");
+        if (response.ok) {
+          const contents = await response.json();
+          const item = contents.find((c: any) => c.key === "backoffice_skills");
+          if (item) {
+            const skillsData = JSON.parse(item.value);
+            if (skillsData.categories) {
+              setCategories(skillsData.categories);
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error loading skills in backoffice:", err);
+      }
+    }
+    loadSkills();
+  }, []);
 
   const resetForm = () => {
     setFormCategoryTitle("");
@@ -99,9 +117,6 @@ export const SkillsManager: React.FC<{ onSaveComplete: (msg: string) => void }> 
     setSaveStatus("saving");
     setSaveMessage("Persistiendo cambios en la base de datos...");
 
-    const TOKEN = import.meta.env.VITE_GITHUB_TOKEN as string;
-    const isDummyToken = !TOKEN || TOKEN === "ghp_TuTokenDeGitHubDeFirmeEscritura" || TOKEN.startsWith("ghp_TuToken");
-
     try {
       // Self-Test / Zod check replacement (basic schema checking)
       updatedList.forEach((cat) => {
@@ -123,15 +138,7 @@ export const SkillsManager: React.FC<{ onSaveComplete: (msg: string) => void }> 
         _updated: new Date().toISOString()
       };
 
-      if (isDummyToken) {
-        await new Promise((resolve) => setTimeout(resolve, 1200));
-      } else {
-        await updateTextFileInRepo(
-          "src/data/backoffice_skills.json",
-          JSON.stringify(payload, null, 2),
-          `[Backoffice] CRUD Skills — ${actionLabel}`
-        );
-      }
+      await saveContent("backoffice_skills", payload);
 
       setSaveStatus("success");
       setSaveMessage("¡Habilidades guardadas correctamente!");

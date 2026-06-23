@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Search, Plus, Edit2, Trash2, Image, X,
   Upload, CheckCircle2, AlertCircle,
   Check
 } from "lucide-react";
-import { updateTextFileInRepo } from "../../../services/githubApiService";
+import { saveContent } from "../../../services/apiService";
 import { Github } from "../../../components/Icons";
-import projectsJson from "../../../data/projects.json";
 
 interface Project {
   id: string;
@@ -24,7 +23,7 @@ interface Project {
 }
 
 export const ProjectsManager: React.FC<{ onSaveComplete: (msg: string) => void }> = ({ onSaveComplete }) => {
-  const [projects, setProjects] = useState<Project[]>(projectsJson as Project[]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
@@ -46,6 +45,24 @@ export const ProjectsManager: React.FC<{ onSaveComplete: (msg: string) => void }
   // Save state for operations
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "success" | "error">("idle");
   const [saveMessage, setSaveMessage] = useState("");
+
+  useEffect(() => {
+    async function loadProjects() {
+      try {
+        const response = await fetch("/api/content");
+        if (response.ok) {
+          const contents = await response.json();
+          const item = contents.find((c: any) => c.key === "projects");
+          if (item) {
+            setProjects(JSON.parse(item.value));
+          }
+        }
+      } catch (err) {
+        console.error("Error loading projects in backoffice:", err);
+      }
+    }
+    loadProjects();
+  }, []);
 
   const resetForm = () => {
     setFormTitle("");
@@ -114,24 +131,10 @@ export const ProjectsManager: React.FC<{ onSaveComplete: (msg: string) => void }
 
   const persistToRepo = async (updatedList: Project[], message: string) => {
     setSaveStatus("saving");
-    setSaveMessage("Guardando listado de proyectos en GitHub...");
-
-    const TOKEN = import.meta.env.VITE_GITHUB_TOKEN as string;
-    const isDummyToken = !TOKEN || TOKEN === "ghp_TuTokenDeGitHubDeFirmeEscritura" || TOKEN.startsWith("ghp_TuToken");
+    setSaveMessage("Guardando listado de proyectos en la base de datos...");
 
     try {
-      const jsonContent = JSON.stringify(updatedList, null, 2);
-
-      if (isDummyToken) {
-        // Simulation delay
-        await new Promise((resolve) => setTimeout(resolve, 1200));
-      } else {
-        await updateTextFileInRepo(
-          "src/data/projects.json",
-          jsonContent,
-          `[Backoffice] CRUD Projects List — ${message}`
-        );
-      }
+      await saveContent("projects", updatedList);
 
       setSaveStatus("success");
       setSaveMessage("Cambios guardados con éxito.");

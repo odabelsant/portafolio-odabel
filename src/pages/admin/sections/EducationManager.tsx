@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Plus, Edit2, Trash2, Eye, X, Check,
   AlertCircle, CheckCircle2, GraduationCap, Calendar, BookOpen
 } from "lucide-react";
-import { updateTextFileInRepo } from "../../../services/githubApiService";
-import initialEducation from "../../../data/backoffice_education.json";
+import { saveContent } from "../../../services/apiService";
 import type { EducationItem } from "../../../data/types";
 
 export const EducationManager: React.FC<{ onSaveComplete: (msg: string) => void }> = ({ onSaveComplete }) => {
-  const [items, setItems] = useState<EducationItem[]>(() => {
-    return (initialEducation.education as EducationItem[]) || [];
-  });
+  const [items, setItems] = useState<EducationItem[]>([]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,6 +23,27 @@ export const EducationManager: React.FC<{ onSaveComplete: (msg: string) => void 
   // Save Status
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "success" | "error">("idle");
   const [saveMessage, setSaveMessage] = useState("");
+
+  useEffect(() => {
+    async function loadEducation() {
+      try {
+        const response = await fetch("/api/content");
+        if (response.ok) {
+          const contents = await response.json();
+          const item = contents.find((c: any) => c.key === "backoffice_education");
+          if (item) {
+            const eduData = JSON.parse(item.value);
+            if (eduData.education) {
+              setItems(eduData.education);
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error loading education in backoffice:", err);
+      }
+    }
+    loadEducation();
+  }, []);
 
   const resetForm = () => {
     setFormTitle("");
@@ -58,9 +76,6 @@ export const EducationManager: React.FC<{ onSaveComplete: (msg: string) => void 
     setSaveStatus("saving");
     setSaveMessage("Persistiendo cambios en la base de datos...");
 
-    const TOKEN = import.meta.env.VITE_GITHUB_TOKEN as string;
-    const isDummyToken = !TOKEN || TOKEN === "ghp_TuTokenDeGitHubDeFirmeEscritura" || TOKEN.startsWith("ghp_TuToken");
-
     try {
       // Tarea 4: Validación de QA Automatizada / Self-Test
       updatedList.forEach((item) => {
@@ -83,15 +98,7 @@ export const EducationManager: React.FC<{ onSaveComplete: (msg: string) => void 
         _updated: new Date().toISOString()
       };
 
-      if (isDummyToken) {
-        await new Promise((resolve) => setTimeout(resolve, 1200));
-      } else {
-        await updateTextFileInRepo(
-          "src/data/backoffice_education.json",
-          JSON.stringify(payload, null, 2),
-          `[Backoffice] CRUD Education — ${actionLabel}`
-        );
-      }
+      await saveContent("backoffice_education", payload);
 
       setSaveStatus("success");
       setSaveMessage("¡Formaciones académicas guardadas correctamente!");
@@ -102,7 +109,7 @@ export const EducationManager: React.FC<{ onSaveComplete: (msg: string) => void 
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : String(err);
       setSaveStatus("error");
-      setSaveMessage(`Error de Validación: ${errMsg}`);
+      setSaveMessage(`Error de Validación/Conexión: ${errMsg}`);
     }
   };
 

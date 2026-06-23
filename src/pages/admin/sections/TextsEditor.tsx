@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { updateTextFileInRepo } from "../../../services/githubApiService";
+import { saveContent } from "../../../services/apiService";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -65,16 +65,9 @@ export const TextsEditor: React.FC<TextsEditorProps> = ({ onSaveComplete }) => {
     };
 
     try {
-      // We merge into the full ES translation. For production you'd fetch
-      // the current file first, deep-merge, then save. Here we save only
-      // the changed slice so Vercel rebuild picks it up.
-      await updateTextFileInRepo(
-        "src/data/backoffice_texts.json",
-        JSON.stringify(updatedEsJson, null, 2),
-        `[Backoffice] Update presentation texts — ${new Date().toLocaleDateString("es")}`
-      );
+      await saveContent("backoffice_texts", updatedEsJson);
 
-      setSaveState({ status: "success", message: "✓ Textos guardados. Vercel desplegará los cambios en ~1 minuto." });
+      setSaveState({ status: "success", message: "✓ Textos guardados correctamente en la base de datos." });
       onSaveComplete("Textos actualizados correctamente.");
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
@@ -172,7 +165,7 @@ export const SaveButton: React.FC<SaveButtonProps> = ({ state, onSave }) => (
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
-          <span>Guardando en GitHub…</span>
+          <span>Guardando en base de datos…</span>
         </>
       ) : (
         <span>💾 Guardar Cambios</span>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ExternalLink, Check, AlertCircle, CheckCircle2 } from "lucide-react";
-import { updateTextFileInRepo } from "../../../services/githubApiService";
+import { saveContent } from "../../../services/apiService";
 import { siteConfig } from "../../../content/siteContent";
 import { Youtube } from "../../../components/Icons";
 
@@ -13,9 +13,6 @@ const extractVideoId = (url: string): string => {
 };
 
 export const VideoPresentationManager: React.FC<{ onSaveComplete: (msg: string) => void }> = ({ onSaveComplete }) => {
-  // Mock Data Validation requirements:
-  // urlES initialized to: https://www.youtube.com/watch?v=FO1rII573ho
-  // urlEN initialized to: siteConfig.youtubeEN (empty or configured value)
   const [urlES, setUrlES] = useState(() => siteConfig.youtubeES || "https://www.youtube.com/watch?v=FO1rII573ho");
   const [urlEN, setUrlEN] = useState(() => siteConfig.youtubeEN || "");
 
@@ -29,6 +26,24 @@ export const VideoPresentationManager: React.FC<{ onSaveComplete: (msg: string) 
   const [isLargeScreen, setIsLargeScreen] = useState(() => window.innerWidth >= 763);
 
   useEffect(() => {
+    async function loadYoutubeConfig() {
+      try {
+        const response = await fetch("/api/content");
+        if (response.ok) {
+          const contents = await response.json();
+          const item = contents.find((c: any) => c.key === "backoffice_youtube");
+          if (item) {
+            const yt = JSON.parse(item.value);
+            if (yt.urlES) setUrlES(yt.urlES);
+            if (yt.urlEN) setUrlEN(yt.urlEN);
+          }
+        }
+      } catch (err) {
+        console.error("Error loading youtube config in backoffice:", err);
+      }
+    }
+    loadYoutubeConfig();
+
     const handleResize = () => {
       setIsLargeScreen(window.innerWidth >= 763);
     };
@@ -52,9 +67,6 @@ export const VideoPresentationManager: React.FC<{ onSaveComplete: (msg: string) 
     setSaveStatus("saving");
     setSaveMessage("Guardando enlaces del video de presentación...");
 
-    const TOKEN = import.meta.env.VITE_GITHUB_TOKEN as string;
-    const isDummyToken = !TOKEN || TOKEN === "ghp_TuTokenDeGitHubDeFirmeEscritura" || TOKEN.startsWith("ghp_TuToken");
-
     try {
       // Basic validations
       if (urlES.trim().length > 0 && !videoIdES) {
@@ -70,15 +82,7 @@ export const VideoPresentationManager: React.FC<{ onSaveComplete: (msg: string) 
         _updated: new Date().toISOString()
       };
 
-      if (isDummyToken) {
-        await new Promise((resolve) => setTimeout(resolve, 1200));
-      } else {
-        await updateTextFileInRepo(
-          "src/data/backoffice_youtube.json",
-          JSON.stringify(payload, null, 2),
-          "[Backoffice] Update Bilingual YouTube presentation URLs"
-        );
-      }
+      await saveContent("backoffice_youtube", payload);
 
       setSaveStatus("success");
       setSaveMessage("¡Configuración de video bilingüe guardada correctamente!");

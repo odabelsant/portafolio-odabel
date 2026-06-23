@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus, Trash2, FileText, Bug, Code2, CheckSquare } from "lucide-react";
-import { updateTextFileInRepo } from "../../../services/githubApiService";
+import { createOrUpdateMetric, deleteMetric as apiDeleteMetric } from "../../../services/apiService";
 import { SaveButton } from "./TextsEditor";
 import type { SaveState } from "./TextsEditor";
-import backofficeMetrics from "../../../data/backoffice_metrics.json";
 
 interface Metric {
   id: string;
@@ -21,22 +20,25 @@ const DEFAULT_METRICS: Metric[] = [
 ];
 
 export const MetricsEditor: React.FC<{ onSaveComplete: (msg: string) => void }> = ({ onSaveComplete }) => {
-  const [metrics, setMetrics] = useState<Metric[]>(() => {
-    const loaded = backofficeMetrics.metrics || [];
-    if (loaded.length === 0) return DEFAULT_METRICS;
-    return loaded.map((m: any) => {
-      const def = DEFAULT_METRICS.find((d) => d.id === m.id);
-      return {
-        id: m.id,
-        label: m.label || def?.label || "Nuevo Logro",
-        value: m.value || "0",
-        icon: m.icon || def?.icon || "CheckSquare",
-        labelKey: m.labelKey || def?.labelKey || ""
-      };
-    });
-  });
-  
+  const [metrics, setMetrics] = useState<Metric[]>(DEFAULT_METRICS);
   const [saveState, setSaveState] = useState<SaveState>({ status: "idle", message: "" });
+
+  useEffect(() => {
+    async function loadMetrics() {
+      try {
+        const response = await fetch("/api/metrics");
+        if (response.ok) {
+          const dbMetrics = await response.json();
+          if (dbMetrics && dbMetrics.length > 0) {
+            setMetrics(dbMetrics);
+          }
+        }
+      } catch (err) {
+        console.error("Error loading metrics in backoffice:", err);
+      }
+    }
+    loadMetrics();
+  }, []);
 
   const updateMetric = (id: string, field: keyof Metric, value: string) => {
     setMetrics((prev) =>
@@ -59,35 +61,37 @@ export const MetricsEditor: React.FC<{ onSaveComplete: (msg: string) => void }> 
   };
 
   const handleSave = async () => {
-    setSaveState({ status: "saving" as const, message: "Guardando indicadores…" });
-
-    const TOKEN = import.meta.env.VITE_GITHUB_TOKEN as string;
-    const isDummyToken = !TOKEN || TOKEN === "ghp_TuTokenDeGitHubDeFirmeEscritura" || TOKEN.startsWith("ghp_TuToken");
+    setSaveState({ status: "saving" as const, message: "Guardando indicadores en la base de datos…" });
 
     try {
-      const payload = {
-        metrics: metrics.map(({ id, label, value, icon, labelKey }) => ({
-          id,
-          label,
-          value,
-          icon,
-          labelKey: labelKey || ""
-        })),
-        _updated: new Date().toISOString(),
-      };
+      // 1. Fetch current database metrics to determine what to delete
+      const response = await fetch("/api/metrics");
+      if (!response.ok) {
+        throw new Error("No se pudieron cargar las métricas existentes para conciliación.");
+      }
+      const existingMetrics: Metric[] = await response.json();
 
-      if (isDummyToken) {
-        // Simulation delay
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-      } else {
-        await updateTextFileInRepo(
-          "src/data/backoffice_metrics.json",
-          JSON.stringify(payload, null, 2),
-          `[Backoffice] Update QA metrics and custom achievements`
-        );
+      // 2. Identify metrics to delete
+      const currentIds = new Set(metrics.map((m) => m.id));
+      const toDelete = existingMetrics.filter((m) => !currentIds.has(m.id));
+
+      // Delete removed metrics
+      for (const m of toDelete) {
+        await apiDeleteMetric(m.id);
       }
 
-      setSaveState({ status: "success" as const, message: "✓ Indicadores guardados. Vercel desplegará los cambios." });
+      // 3. Create or update each metric currently in our local state
+      for (const metric of metrics) {
+        await createOrUpdateMetric({
+          id: metric.id,
+          label: metric.label,
+          value: metric.value,
+          icon: metric.icon,
+          labelKey: metric.labelKey || "",
+        });
+      }
+
+      setSaveState({ status: "success" as const, message: "✓ Indicadores guardados correctamente en Neon." });
       onSaveComplete("Métricas QA actualizadas.");
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);

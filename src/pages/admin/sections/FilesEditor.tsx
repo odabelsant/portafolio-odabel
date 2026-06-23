@@ -1,10 +1,17 @@
-import React from "react";
-import { Edit2, FileText, Image, RefreshCcw, Upload } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { FileText, Image, Upload } from "lucide-react";
 import { CertificatesManager } from "./CertificatesManager";
-import { certificacionesMock } from "../../../data/certificacionesMock";
 
 interface FilesEditorProps {
   onSaveComplete: (msg: string) => void;
+}
+
+interface Certificate {
+  id: string;
+  title: string;
+  institution: string;
+  year: string;
+  fileUrl: string;
 }
 
 const staticFiles = [
@@ -32,6 +39,34 @@ const staticFiles = [
 ];
 
 export const FilesEditor: React.FC<FilesEditorProps> = ({ onSaveComplete }) => {
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
+
+  const fetchCertificates = async () => {
+    try {
+      const response = await fetch("/api/certificates");
+      if (response.ok) {
+        const data = await response.json();
+        setCertificates(data);
+      }
+    } catch (err) {
+      console.error("Error loading certificates preview:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchCertificates();
+  }, []);
+
+  const handleSaveCompleteWrapper = (msg: string) => {
+    fetchCertificates();
+    onSaveComplete(msg);
+  };
+
+  const isImageFile = (url: string) => {
+    const norm = url.toLowerCase();
+    return norm.endsWith(".png") || norm.endsWith(".jpg") || norm.endsWith(".jpeg") || norm.endsWith(".webp");
+  };
+
   return (
     <div className="space-y-8">
       <div>
@@ -61,56 +96,46 @@ export const FilesEditor: React.FC<FilesEditorProps> = ({ onSaveComplete }) => {
 
       <div className="glass-panel rounded-2xl border border-white/5 p-5">
         <div className="mb-4">
-          <h3 className="text-base font-bold text-white">Gestión de Certificaciones (Mock)</h3>
+          <h3 className="text-base font-bold text-white">Gestión de Certificaciones</h3>
           <p className="text-xs text-slate-500">
-            Vista previa estática de los certificados antes de activar persistencia backend.
+            Vista previa dinámica de los certificados persistidos en Neon PostgreSQL.
           </p>
         </div>
 
         <div className="space-y-3">
-          {certificacionesMock.map((certificacion) => (
-            <div
-              key={certificacion.id}
-              className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 rounded-xl border border-white/5 bg-slate-950/40 p-3"
-            >
-              <div className="w-full md:w-20 h-24 md:h-16 rounded-lg overflow-hidden border border-white/10 bg-slate-900/80 flex-shrink-0">
-                <img
-                  src={certificacion.imageUrl}
-                  alt={certificacion.titulo}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
+          {certificates.map((cert) => {
+            const isImg = isImageFile(cert.fileUrl);
+            return (
+              <div
+                key={cert.id}
+                className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 rounded-xl border border-white/5 bg-slate-950/40 p-3"
+              >
+                <div className="w-full md:w-20 h-24 md:h-16 rounded-lg overflow-hidden border border-white/10 bg-slate-900/80 flex-shrink-0 flex items-center justify-center">
+                  {isImg ? (
+                    <img
+                      src={cert.fileUrl}
+                      alt={cert.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <FileText className="w-8 h-8 text-slate-600" />
+                  )}
+                </div>
 
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-white truncate">{certificacion.titulo}</p>
-                <p className="text-xs text-slate-400">{certificacion.plataforma}</p>
-                <p className="text-[11px] text-slate-500 truncate mt-0.5">{certificacion.imageUrl}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-white truncate">{cert.title}</p>
+                  <p className="text-xs text-slate-400">{cert.institution} ({cert.year})</p>
+                  <p className="text-[11px] text-slate-500 truncate mt-0.5">{cert.fileUrl}</p>
+                </div>
               </div>
-
-              <div className="flex items-center gap-2 md:justify-end">
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-slate-200 border border-white/10 hover:border-primary/40 hover:bg-primary/10 transition-colors"
-                >
-                  <Edit2 className="w-3.5 h-3.5" />
-                  Editar
-                </button>
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-primary border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-colors"
-                >
-                  <RefreshCcw className="w-3.5 h-3.5" />
-                  Reemplazar Imagen
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
       <div className="border-t border-white/5 pt-8">
-        <CertificatesManager onSaveComplete={onSaveComplete} />
+        <CertificatesManager onSaveComplete={handleSaveCompleteWrapper} />
       </div>
     </div>
   );

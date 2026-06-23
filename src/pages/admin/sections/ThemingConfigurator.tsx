@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Palette, AlertCircle } from "lucide-react";
-import { updateTextFileInRepo } from "../../../services/githubApiService";
+import { saveContent } from "../../../services/apiService";
 import { SaveButton } from "./TextsEditor";
 import type { SaveState } from "./TextsEditor";
-import themeConfig from "../../../data/theme_config.json";
 
 interface ModeConfig {
   bgPrimary: string;
@@ -17,11 +16,44 @@ interface FullThemeConfig {
   light: ModeConfig;
 }
 
+const DEFAULT_THEME: FullThemeConfig = {
+  dark: {
+    bgPrimary: "#17254f",
+    bgSurface: "#17254f",
+    textPrimary: "#ffffff",
+    accentColor: "#3b82f6"
+  },
+  light: {
+    bgPrimary: "#ffffff",
+    bgSurface: "#f3f4f6",
+    textPrimary: "#111827",
+    accentColor: "#2563eb"
+  }
+};
+
 export const ThemingConfigurator: React.FC<{ onSaveComplete: (msg: string) => void }> = ({ onSaveComplete }) => {
-  const [themeState, setThemeState] = useState<FullThemeConfig>(themeConfig as FullThemeConfig);
+  const [themeState, setThemeState] = useState<FullThemeConfig>(DEFAULT_THEME);
   const [activeMode, setActiveMode] = useState<"dark" | "light">("dark");
   const [saveState, setSaveState] = useState<SaveState>({ status: "idle", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    async function loadThemeConfig() {
+      try {
+        const response = await fetch("/api/content");
+        if (response.ok) {
+          const contents = await response.json();
+          const item = contents.find((c: any) => c.key === "theme_config");
+          if (item) {
+            setThemeState(JSON.parse(item.value));
+          }
+        }
+      } catch (err) {
+        console.error("Error loading theme config in backoffice:", err);
+      }
+    }
+    loadThemeConfig();
+  }, []);
 
   const validateHex = (val: string): boolean => {
     return /^#[0-9A-Fa-f]{6}$/.test(val);
@@ -69,22 +101,8 @@ export const ThemingConfigurator: React.FC<{ onSaveComplete: (msg: string) => vo
 
     setSaveState({ status: "saving", message: "Guardando configuración de colores…" });
 
-    const TOKEN = import.meta.env.VITE_GITHUB_TOKEN as string;
-    const isDummyToken = !TOKEN || TOKEN === "ghp_TuTokenDeGitHubDeFirmeEscritura" || TOKEN.startsWith("ghp_TuToken");
-
     try {
-      const jsonContent = JSON.stringify(themeState, null, 2);
-
-      if (isDummyToken) {
-        // Simulation delay
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-      } else {
-        await updateTextFileInRepo(
-          "src/data/theme_config.json",
-          jsonContent,
-          `[Backoffice] Update dynamic design system colors`
-        );
-      }
+      await saveContent("theme_config", themeState);
 
       setSaveState({ status: "success", message: "✓ Colores del tema guardados correctamente." });
       onSaveComplete("Colores del sistema de diseño actualizados.");
