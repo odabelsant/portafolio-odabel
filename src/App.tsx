@@ -5,6 +5,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import { ShieldAlert, ArrowLeft } from "lucide-react";
 import { siteConfig } from "./content/siteContent";
 import { projectsData } from "./data/projects";
+import { deepMerge } from "./utils/deepMerge";
 
 // Layout & Global Components
 import { Header } from "./layout/Header";
@@ -90,7 +91,9 @@ const App: React.FC = () => {
           for (const item of contents) {
             if (item.key === "backoffice_texts") {
               const texts = JSON.parse(item.value);
-              i18n.addResourceBundle("es", "translation", texts, true, true);
+              const currentRes = i18n.getResourceBundle("es", "translation") || {};
+              const merged = deepMerge(currentRes, texts);
+              i18n.addResourceBundle("es", "translation", merged, true, true);
             } else if (item.key === "backoffice_youtube") {
               const yt = JSON.parse(item.value);
               siteConfig.youtubeES = yt.urlES || siteConfig.youtubeES;
