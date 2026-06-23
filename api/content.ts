@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import * as z from "zod";
-import { prisma } from "./utils/prisma";
-import { verifyAuth } from "./utils/auth";
+import { prisma } from "./utils/prisma.js";
+import { verifyAuth } from "./utils/auth.js";
 
 const contentSchema = z.object({
   key: z.string().min(1),

@@ -20,11 +20,6 @@ function escapeHTML(text: string): string {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Limitar a peticiones POST únicamente
-  if (req.method !== "POST") {
-    return res.status(405).json({ success: false, error: "Method Not Allowed" });
-  }
-
   // Configurar CORS
   const allowedOrigin = "https://odabel.com"; // Ajustar al dominio final
   const requestOrigin = req.headers.origin;
@@ -46,6 +41,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === "OPTIONS") {
     return res.status(200).end();
+  }
+
+  // Limitar a peticiones POST únicamente
+  if (req.method !== "POST") {
+    return res.status(405).json({ success: false, error: "Method Not Allowed" });
   }
 
   try {
